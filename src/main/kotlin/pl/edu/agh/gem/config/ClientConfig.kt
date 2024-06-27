@@ -18,10 +18,26 @@ class ClientConfig {
             .setReadTimeout(attachmentStoreProperties.readTimeout)
             .build()
     }
+
+    @Bean
+    @Qualifier("GroupManagerRestTemplate")
+    fun groupManagerRestTemplate(groupManagerProperties: GroupManagerProperties): RestTemplate {
+        return RestTemplateBuilder()
+            .setConnectTimeout(groupManagerProperties.connectTimeout)
+            .setReadTimeout(groupManagerProperties.readTimeout)
+            .build()
+    }
 }
 
 @ConfigurationProperties(prefix = "attachment-store")
 data class AttachmentStoreProperties(
+    val url: String,
+    val connectTimeout: Duration,
+    val readTimeout: Duration,
+)
+
+@ConfigurationProperties(prefix = "group-manager")
+data class GroupManagerProperties(
     val url: String,
     val connectTimeout: Duration,
     val readTimeout: Duration,
