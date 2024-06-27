@@ -14,7 +14,7 @@ resilience4j.retry:
         - org.springframework.web.client.HttpServerErrorException
         - java.io.IOException
       ignoreExceptions: []
-    currencyManager:
+    attachmentStore:
       maxAttempts: 3
       waitDuration: 100ms
       enableExponentialBackoff: true

@@ -23,7 +23,7 @@ class RestAttachmentStoreClient(
     @Qualifier("AttachmentStoreRestTemplate") val restTemplate: RestTemplate,
     val attachmentStoreProperties: AttachmentStoreProperties,
 ) : AttachmentStoreClient {
-    @Retry(name = "userDetailsManager")
+    @Retry(name = "attachmentStore")
     override fun getDefaultUserAttachmentId(): String {
         return try {
             restTemplate.exchange(
@@ -31,15 +31,15 @@ class RestAttachmentStoreClient(
                 GET,
                 HttpEntity<Any>(HttpHeaders().withAppAcceptType()),
                 DefaultAttachmentResponse::class.java,
-            ).body?.attachmentId ?: throw AttachmentStoreClientException("While trying to retrieve available currencies we receive empty body")
+            ).body?.attachmentId ?: throw AttachmentStoreClientException("While trying to retrieve attachmentId we receive empty body")
         } catch (ex: HttpClientErrorException) {
-            logger.warn(ex) { "Client side exception while trying to retrieve available currencies" }
+            logger.warn(ex) { "Client side exception while trying to retrieve attachmentId" }
             throw AttachmentStoreClientException(ex.message)
         } catch (ex: HttpServerErrorException) {
-            logger.warn(ex) { "Server side exception while trying to retrieve available currencies" }
+            logger.warn(ex) { "Server side exception while trying to retrieve attachmentId" }
             throw RetryableAttachmentStoreClientException(ex.message)
         } catch (ex: Exception) {
-            logger.warn(ex) { "Unexpected exception while trying to retrieve available currencies" }
+            logger.warn(ex) { "Unexpected exception while trying to retrieve attachmentId" }
             throw AttachmentStoreClientException(ex.message)
         }
     }

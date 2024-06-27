@@ -12,7 +12,7 @@ import java.time.Duration
 class ClientConfig {
     @Bean
     @Qualifier("AttachmentStoreRestTemplate")
-    fun exampleRestTemplate(attachmentStoreProperties: AttachmentStoreProperties): RestTemplate {
+    fun attachmentStoreRestTemplate(attachmentStoreProperties: AttachmentStoreProperties): RestTemplate {
         return RestTemplateBuilder()
             .setConnectTimeout(attachmentStoreProperties.connectTimeout)
             .setReadTimeout(attachmentStoreProperties.readTimeout)
