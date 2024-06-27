@@ -1,20 +1,28 @@
 package pl.edu.agh.gem.internal.service
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.ShouldSpec
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.times
 import org.mockito.kotlin.whenever
+import pl.edu.agh.gem.helper.group.createGroupMembers
+import pl.edu.agh.gem.internal.client.GroupManagerClient
 import pl.edu.agh.gem.internal.persistance.UserDetailsRepository
+import pl.edu.agh.gem.util.DummyData.ANOTHER_USER_ID
+import pl.edu.agh.gem.util.DummyData.GROUP_ID
+import pl.edu.agh.gem.util.DummyData.USER_ID
+import pl.edu.agh.gem.util.createBasicUserDetails
 import pl.edu.agh.gem.util.createUserDetails
 
 class UserDetailsServiceTest : ShouldSpec({
     val userDetailsRepository = mock<UserDetailsRepository>()
-    val userDetailsService = UserDetailsService(userDetailsRepository)
+    val groupManagerClient = mock<GroupManagerClient>()
+    val userDetailsService = UserDetailsService(userDetailsRepository, groupManagerClient)
 
     should("create user details successfully") {
         // given
-        val userDetails = createUserDetails()
+        val userDetails = createBasicUserDetails()
         whenever(userDetailsRepository.save(userDetails)).thenReturn(userDetails)
 
         // when
@@ -22,5 +30,44 @@ class UserDetailsServiceTest : ShouldSpec({
 
         // then
         verify(userDetailsRepository, times(1)).save(userDetails)
+    }
+
+    should("get internal group user details successfully") {
+        // given
+        val groupMembers = createGroupMembers(USER_ID, ANOTHER_USER_ID)
+        val userDetails = createUserDetails(USER_ID)
+        val anotherUserDetails = createUserDetails(ANOTHER_USER_ID)
+        whenever(groupManagerClient.getMembers(GROUP_ID)).thenReturn(groupMembers)
+        whenever(userDetailsRepository.findById(USER_ID)).thenReturn(userDetails)
+        whenever(userDetailsRepository.findById(ANOTHER_USER_ID)).thenReturn(anotherUserDetails)
+
+        // when
+        val result = userDetailsService.getGroupUserDetails(GROUP_ID)
+
+        // then
+        result.all {
+            it in listOf(userDetails, anotherUserDetails)
+        }
+        verify(userDetailsRepository, times(1)).findById(USER_ID)
+        verify(userDetailsRepository, times(1)).findById(ANOTHER_USER_ID)
+        verify(groupManagerClient, times(1)).getMembers(GROUP_ID)
+    }
+
+    should("throw MissingUserDetailsException when UserDetails with given id doesn't exist") {
+        // given
+        val groupMembers = createGroupMembers(USER_ID, ANOTHER_USER_ID)
+        val userDetails = createUserDetails(USER_ID)
+        whenever(groupManagerClient.getMembers(GROUP_ID)).thenReturn(groupMembers)
+        whenever(userDetailsRepository.findById(USER_ID)).thenReturn(userDetails)
+        whenever(userDetailsRepository.findById(ANOTHER_USER_ID)).thenReturn(null)
+
+        // when & then
+        shouldThrow<MissingUserDetailsException> {
+            userDetailsService.getGroupUserDetails(GROUP_ID)
+        }
+
+        verify(userDetailsRepository, times(1)).findById(USER_ID)
+        verify(userDetailsRepository, times(1)).findById(ANOTHER_USER_ID)
+        verify(groupManagerClient, times(1)).getMembers(GROUP_ID)
     }
 },)

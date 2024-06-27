@@ -2,13 +2,13 @@ package pl.edu.agh.gem.external.persistence
 
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
-import pl.edu.agh.gem.util.createUserDetailsEntity
+import pl.edu.agh.gem.util.createBasicUserDetailsEntity
 
 class UserDetailsEntityTest : ShouldSpec({
 
     should("map UserDetailsEntity to UserDetails") {
         // given
-        val userDetailsEntity = createUserDetailsEntity()
+        val userDetailsEntity = createBasicUserDetailsEntity()
 
         // when
         val userDetails = userDetailsEntity.toDomain()
