@@ -11,7 +11,6 @@ data class InternalUserDetailsDto(
     val username: String,
     val firstName: String?,
     val lastName: String?,
-    val attachmentId: String,
 )
 
 fun List<UserDetails>.toInternalGroupUserDetailsResponse() = InternalGroupUserDetailsResponse(
@@ -23,5 +22,4 @@ fun UserDetails.toInternalUserDetailsDto() = InternalUserDetailsDto(
     username = username,
     firstName = firstName,
     lastName = lastName,
-    attachmentId = attachmentId,
 )

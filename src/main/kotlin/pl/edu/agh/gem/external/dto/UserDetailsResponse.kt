@@ -12,15 +12,15 @@ data class UserDetailsResponse(
     val bankAccountNumber: String?,
     val preferredPaymentMethod: PaymentMethod,
     val attachmentId: String,
-) 
+)
 
 fun UserDetails.toUserDetailsResponse() = UserDetailsResponse(
-        id = id,
-        username = username,
-        firstName = firstName,
-        lastName = lastName,
-        phoneNumber = phoneNumber,
-        bankAccountNumber = bankAccountNumber,
-        preferredPaymentMethod = preferredPaymentMethod,
-        attachmentId = attachmentId,
+    id = id,
+    username = username,
+    firstName = firstName,
+    lastName = lastName,
+    phoneNumber = phoneNumber,
+    bankAccountNumber = bankAccountNumber,
+    preferredPaymentMethod = preferredPaymentMethod,
+    attachmentId = attachmentId,
 )
