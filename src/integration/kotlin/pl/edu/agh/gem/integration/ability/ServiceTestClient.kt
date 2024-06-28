@@ -7,7 +7,10 @@ import org.springframework.test.web.servlet.client.MockMvcWebTestClient.bindToAp
 import org.springframework.web.context.WebApplicationContext
 import pl.edu.agh.gem.headers.HeadersUtils.withAppAcceptType
 import pl.edu.agh.gem.headers.HeadersUtils.withAppContentType
+import pl.edu.agh.gem.headers.HeadersUtils.withValidatedUser
+import pl.edu.agh.gem.paths.Paths.EXTERNAL
 import pl.edu.agh.gem.paths.Paths.INTERNAL
+import pl.edu.agh.gem.security.GemUser
 
 @Component
 @Lazy
@@ -26,11 +29,20 @@ class ServiceTestClient(applicationContext: WebApplicationContext) {
             .exchange()
     }
 
-    fun getGroupUserDetails(groupId: String): ResponseSpec {
+    fun getInternalGroupUserDetails(groupId: String): ResponseSpec {
         return webClient.get()
             .uri { it.path("$INTERNAL/user-details/$groupId").build() }
             .headers {
                 it.withAppAcceptType()
+            }
+            .exchange()
+    }
+
+    fun getExternalGroupUserDetails(user: GemUser, groupId: String): ResponseSpec {
+        return webClient.get()
+            .uri { it.path("$EXTERNAL/user-details/$groupId").build() }
+            .headers {
+                it.withValidatedUser(user).withAppAcceptType()
             }
             .exchange()
     }

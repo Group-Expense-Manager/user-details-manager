@@ -49,7 +49,7 @@ class InternalUserDetailsControllerIT(
             groupUserDetails.forEach { userDetail -> userDetailsRepository.save(userDetail) }
 
             // when
-            val response = service.getGroupUserDetails(GROUP_ID)
+            val response = service.getInternalGroupUserDetails(GROUP_ID)
 
             // then
             response shouldHaveHttpStatus OK
@@ -68,7 +68,7 @@ class InternalUserDetailsControllerIT(
             stubMembersUrl(createGroupMembersResponse(USER_ID, ANOTHER_USER_ID), GROUP_ID)
 
             // when
-            val response = service.getGroupUserDetails(GROUP_ID)
+            val response = service.getInternalGroupUserDetails(GROUP_ID)
 
             // then
             response shouldHaveHttpStatus NOT_FOUND
