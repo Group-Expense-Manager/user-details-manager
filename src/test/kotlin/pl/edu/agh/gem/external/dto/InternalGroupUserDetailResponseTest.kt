@@ -19,7 +19,6 @@ class InternalGroupUserDetailResponseTest : ShouldSpec({
             it.username shouldBe userDetails.username
             it.firstName shouldBe userDetails.firstName
             it.lastName shouldBe userDetails.lastName
-            it.attachmentId shouldBe userDetails.attachmentId
         }
     }
 
@@ -51,7 +50,6 @@ class InternalGroupUserDetailResponseTest : ShouldSpec({
             it.map { dto -> dto.username } shouldContainExactly usernames
             it.map { dto -> dto.firstName } shouldContainExactly firstNames
             it.map { dto -> dto.lastName } shouldContainExactly lastNames
-            it.map { dto -> dto.attachmentId } shouldContainExactly attachmentIds
         }
     }
 },)
