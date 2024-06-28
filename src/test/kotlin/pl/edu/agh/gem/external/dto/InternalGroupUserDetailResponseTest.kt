@@ -28,7 +28,6 @@ class InternalGroupUserDetailResponseTest : ShouldSpec({
         val usernames = listOf("name1", "name2", "name3")
         val firstNames = listOf("firstName1", "firstName2", "firstName3")
         val lastNames = listOf("lastName1", "lastName2", "lastName3")
-        val attachmentIds = listOf("attachmentId1", "attachmentId2", "attachmentId3")
 
         val groupUserDetails = ids.mapIndexed { index, id ->
             createUserDetails(
@@ -36,7 +35,6 @@ class InternalGroupUserDetailResponseTest : ShouldSpec({
                 username = usernames[index],
                 firstName = firstNames[index],
                 lastName = lastNames[index],
-                attachmentId = attachmentIds[index],
             )
         }
 
