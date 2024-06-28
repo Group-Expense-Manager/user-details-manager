@@ -8,7 +8,7 @@ import pl.edu.agh.gem.util.DummyData.ANOTHER_USER_ID
 import pl.edu.agh.gem.util.DummyData.GROUP_ID
 import pl.edu.agh.gem.util.DummyData.USER_ID
 
-class GroupMemberClientIT(
+class GroupManagerClientIT(
     private val groupManagerClient: GroupManagerClient,
 ) : BaseIntegrationSpec({
     should("get group members ids") {
