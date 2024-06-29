@@ -70,7 +70,7 @@ class ExternalUserDetailsControllerIT(
             }
         }
 
-        should("return NOT_FOUND when user detail doesnt exist") {
+        should("return NOT_FOUND when user detail doesn't exist") {
             // given
             stubUserGroupsUrl(createUserGroupsResponse(GROUP_ID, ANOTHER_GROUP_ID), USER_ID)
             stubMembersUrl(createGroupMembersResponse(USER_ID, ANOTHER_USER_ID), GROUP_ID)
@@ -86,7 +86,7 @@ class ExternalUserDetailsControllerIT(
             }
         }
 
-        should("return NOT_FOUND when user detail doesnt exist") {
+        should("return FORBIDDEN when user is not a group member") {
             // given
             stubUserGroupsUrl(createUserGroupsResponse(ANOTHER_GROUP_ID), USER_ID)
 
