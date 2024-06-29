@@ -46,4 +46,13 @@ class ServiceTestClient(applicationContext: WebApplicationContext) {
             }
             .exchange()
     }
+
+    fun getUserDetails(user: GemUser): ResponseSpec {
+        return webClient.get()
+            .uri { it.path("$EXTERNAL/user-details").build() }
+            .headers {
+                it.withValidatedUser(user).withAppAcceptType()
+            }
+            .exchange()
+    }
 }
