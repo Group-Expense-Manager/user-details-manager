@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import pl.edu.agh.gem.exception.UserWithoutGroupAccessException
 import pl.edu.agh.gem.external.dto.ExternalGroupUserDetailsResponse
+import pl.edu.agh.gem.external.dto.UserDetailsResponse
 import pl.edu.agh.gem.external.dto.toExternalGroupUserDetailsResponse
+import pl.edu.agh.gem.external.dto.toUserDetailsResponse
 import pl.edu.agh.gem.internal.client.GroupManagerClient
 import pl.edu.agh.gem.internal.service.UserDetailsService
 import pl.edu.agh.gem.media.InternalApiMediaType.APPLICATION_JSON_INTERNAL_VER_1
@@ -30,6 +32,14 @@ class ExternalUserDetailsController(
     ): ExternalGroupUserDetailsResponse {
         userId.checkIfUserHaveAccess(groupId)
         return userDetailsService.getGroupUserDetails(groupId).toExternalGroupUserDetailsResponse()
+    }
+
+    @GetMapping(produces = [APPLICATION_JSON_INTERNAL_VER_1])
+    @ResponseStatus(OK)
+    fun getUserDetails(
+        @GemUserId userId: String,
+    ): UserDetailsResponse {
+        return userDetailsService.getUserDetails(userId).toUserDetailsResponse()
     }
 
     private fun String.checkIfUserHaveAccess(groupId: String) {
