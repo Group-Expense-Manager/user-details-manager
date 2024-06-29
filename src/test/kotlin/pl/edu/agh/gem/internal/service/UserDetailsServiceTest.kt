@@ -2,6 +2,7 @@ package pl.edu.agh.gem.internal.service
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.ShouldSpec
+import io.kotest.matchers.shouldBe
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.times
@@ -69,5 +70,29 @@ class UserDetailsServiceTest : ShouldSpec({
         verify(userDetailsRepository, times(1)).findById(USER_ID)
         verify(userDetailsRepository, times(1)).findById(ANOTHER_USER_ID)
         verify(groupManagerClient, times(1)).getMembers(GROUP_ID)
+    }
+
+    should("get user details") {
+        // given
+        val userDetails = createUserDetails(USER_ID)
+        whenever(userDetailsRepository.findById(USER_ID)).thenReturn(userDetails)
+
+        // when
+        val result = userDetailsService.getUserDetails(USER_ID)
+
+        // then
+        result shouldBe userDetails
+        verify(userDetailsRepository, times(1)).findById(USER_ID)
+    }
+
+    should("throw MissingUserDetailsException when UserDetails with given id doesn't exist") {
+        // given
+        whenever(userDetailsRepository.findById(USER_ID)).thenReturn(null)
+
+        // when & then
+        shouldThrow<MissingUserDetailsException> {
+            userDetailsService.getUserDetails(USER_ID)
+        }
+        verify(userDetailsRepository, times(1)).findById(USER_ID)
     }
 },)

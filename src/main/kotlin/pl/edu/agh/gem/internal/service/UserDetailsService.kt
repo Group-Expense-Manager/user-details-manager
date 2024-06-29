@@ -18,6 +18,10 @@ class UserDetailsService(
         val groupMembers = groupManagerClient.getMembers(groupId)
         return groupMembers.members.map { userDetailsRepository.findById(it.id) ?: throw MissingUserDetailsException(it.id) }
     }
+
+    fun getUserDetails(userId: String): UserDetails {
+        return userDetailsRepository.findById(userId) ?: throw MissingUserDetailsException(userId)
+    }
 }
 
 class MissingUserDetailsException(userId: String) :
