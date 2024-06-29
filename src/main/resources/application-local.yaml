@@ -10,3 +10,8 @@ attachment-store:
   url: postman-mock-server.com
   read-timeout: 1000ms
   connect-timeout: 1000ms
+
+group-manager:
+  url: postman-mock-server.com
+  read-timeout: 1000ms
+  connect-timeout: 1000ms
