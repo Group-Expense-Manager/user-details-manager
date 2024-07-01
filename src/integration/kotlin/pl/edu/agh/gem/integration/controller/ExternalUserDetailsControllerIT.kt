@@ -188,7 +188,6 @@ class ExternalUserDetailsControllerIT(
         should("return NOT_FOUND when user details doesn't exist") {
             // given
             val user = createGemUser(USER_ID)
-            val userDetails = createUserDetails(ANOTHER_USER_ID)
             stubUserGroupsUrl(createUserGroupsResponse(GROUP_ID), USER_ID)
             stubMembersUrl(createGroupMembersResponse(USER_ID, ANOTHER_USER_ID), GROUP_ID)
 
