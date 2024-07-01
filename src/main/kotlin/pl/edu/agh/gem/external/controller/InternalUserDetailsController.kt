@@ -32,7 +32,7 @@ class InternalUserDetailsController(
         userDetailsService.create(userDetailsCreationRequest.toDomain(attachmentId))
     }
 
-    @GetMapping("/{groupId}", produces = [APPLICATION_JSON_INTERNAL_VER_1])
+    @GetMapping("/groups/{groupId}", produces = [APPLICATION_JSON_INTERNAL_VER_1])
     @ResponseStatus(OK)
     fun getGroupUserDetails(
         @PathVariable groupId: String,

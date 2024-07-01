@@ -27,4 +27,11 @@ class ApiExceptionHandler {
     ): ResponseEntity<SimpleErrorsHolder> {
         return ResponseEntity(handleError(exception), FORBIDDEN)
     }
+
+    @ExceptionHandler(UserNotGroupMemberException::class)
+    fun handleUserNotGroupMemberException(
+        exception: UserNotGroupMemberException,
+    ): ResponseEntity<SimpleErrorsHolder> {
+        return ResponseEntity(handleError(exception), FORBIDDEN)
+    }
 }
