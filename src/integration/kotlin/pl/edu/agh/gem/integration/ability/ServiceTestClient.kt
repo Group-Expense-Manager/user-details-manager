@@ -64,4 +64,14 @@ class ServiceTestClient(applicationContext: WebApplicationContext) {
             }
             .exchange()
     }
+
+    fun updateGroupUserDetails(user: GemUser, body: Any): ResponseSpec {
+        return webClient.put()
+            .uri { it.path("$EXTERNAL/user-details").build() }
+            .headers {
+                it.withValidatedUser(user).withAppContentType()
+            }
+            .bodyValue(body)
+            .exchange()
+    }
 }

@@ -3,6 +3,7 @@ package pl.edu.agh.gem.internal.service
 import org.springframework.stereotype.Service
 import pl.edu.agh.gem.internal.client.GroupManagerClient
 import pl.edu.agh.gem.internal.model.UserDetails
+import pl.edu.agh.gem.internal.model.UserDetailsUpdate
 import pl.edu.agh.gem.internal.persistance.UserDetailsRepository
 
 @Service
@@ -21,6 +22,23 @@ class UserDetailsService(
 
     fun getUserDetails(userId: String): UserDetails {
         return userDetailsRepository.findById(userId) ?: throw MissingUserDetailsException(userId)
+    }
+
+    fun updateUserDetails(userDetailsUpdate: UserDetailsUpdate) {
+        val userDetails = userDetailsRepository.findById(userDetailsUpdate.userId) ?: throw MissingUserDetailsException(userDetailsUpdate.userId)
+
+        val updatedUserDetails = UserDetails(
+            id = userDetails.id,
+            username = userDetailsUpdate.username ?: userDetails.username,
+            firstName = userDetailsUpdate.firstName ?: userDetails.firstName,
+            lastName = userDetailsUpdate.lastName ?: userDetails.lastName,
+            phoneNumber = userDetailsUpdate.phoneNumber ?: userDetails.phoneNumber,
+            bankAccountNumber = userDetailsUpdate.bankAccountNumber ?: userDetails.bankAccountNumber,
+            preferredPaymentMethod = userDetailsUpdate.preferredPaymentMethod ?: userDetails.preferredPaymentMethod,
+            attachmentId = userDetailsUpdate.attachmentId ?: userDetails.attachmentId,
+        )
+
+        userDetailsRepository.save(updatedUserDetails)
     }
 }
 
