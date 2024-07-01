@@ -9,12 +9,14 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.whenever
 import pl.edu.agh.gem.helper.group.createGroupMembers
 import pl.edu.agh.gem.internal.client.GroupManagerClient
+import pl.edu.agh.gem.internal.model.PaymentMethod.NONE
 import pl.edu.agh.gem.internal.persistance.UserDetailsRepository
 import pl.edu.agh.gem.util.DummyData.ANOTHER_USER_ID
 import pl.edu.agh.gem.util.DummyData.GROUP_ID
 import pl.edu.agh.gem.util.DummyData.USER_ID
 import pl.edu.agh.gem.util.createBasicUserDetails
 import pl.edu.agh.gem.util.createUserDetails
+import pl.edu.agh.gem.util.createUserDetailsUpdate
 
 class UserDetailsServiceTest : ShouldSpec({
     val userDetailsRepository = mock<UserDetailsRepository>()
@@ -92,6 +94,57 @@ class UserDetailsServiceTest : ShouldSpec({
         // when & then
         shouldThrow<MissingUserDetailsException> {
             userDetailsService.getUserDetails(USER_ID)
+        }
+        verify(userDetailsRepository, times(1)).findById(USER_ID)
+    }
+
+    should("update UserDetails successfully") {
+        // given
+        val oldUserName = "name1"
+        val newUserName = "name2"
+        val oldAttachmentId = "123"
+        val newFirstName = "John"
+        val newLastName = "Doe"
+
+        val userDetails = createBasicUserDetails(USER_ID, oldUserName, oldAttachmentId)
+        val userDetailsUpdate = createUserDetailsUpdate(
+            USER_ID,
+            newUserName,
+            newFirstName,
+            newLastName,
+            phoneNumber = null,
+            bankAccountNumber = null,
+            preferredPaymentMethod = null,
+            attachmentId = null,
+        )
+        val expectedUserDetails = createUserDetails(
+            id = USER_ID,
+            username = newUserName,
+            firstName = newFirstName,
+            lastName = newLastName,
+            phoneNumber = null,
+            bankAccountNumber = null,
+            preferredPaymentMethod = NONE,
+            attachmentId = oldAttachmentId,
+
+        )
+        whenever(userDetailsRepository.findById(USER_ID)).thenReturn(userDetails)
+
+        // when
+        userDetailsService.updateUserDetails(userDetailsUpdate)
+
+        // then
+        verify(userDetailsRepository, times(1)).findById(USER_ID)
+        verify(userDetailsRepository, times(1)).save(expectedUserDetails)
+    }
+
+    should("throw MissingUserDetailsException when UserDetails with given id doesn't exist") {
+        // given
+        whenever(userDetailsRepository.findById(USER_ID)).thenReturn(null)
+
+        // when & then
+        shouldThrow<MissingUserDetailsException> {
+            userDetailsService.updateUserDetails(createUserDetailsUpdate(USER_ID))
         }
         verify(userDetailsRepository, times(1)).findById(USER_ID)
     }
