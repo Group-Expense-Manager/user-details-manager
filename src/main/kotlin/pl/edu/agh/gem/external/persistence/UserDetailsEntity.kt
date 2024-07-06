@@ -10,11 +10,11 @@ data class UserDetailsEntity(
     @Id
     val id: String,
     val username: String,
-    val firstName: String?,
-    val lastName: String?,
-    val phoneNumber: String?,
-    val bankAccountNumber: String?,
-    val preferredPaymentMethod: PaymentMethod,
+    val firstName: String? = null,
+    val lastName: String? = null,
+    val phoneNumber: String? = null,
+    val bankAccountNumber: String? = null,
+    val preferredPaymentMethod: PaymentMethod = PaymentMethod.NONE,
     val attachmentId: String,
 ) {
     fun toDomain() =

@@ -23,11 +23,6 @@ fun createUserDetails(
 ) = UserDetails(
     id = id,
     username = username,
-    firstName = null,
-    lastName = null,
-    phoneNumber = null,
-    bankAccountNumber = null,
-    preferredPaymentMethod = NONE,
     attachmentId = attachmentId,
 )
 
@@ -38,10 +33,6 @@ fun createUserDetailsEntity(
 ) = UserDetailsEntity(
     id = id,
     username = username,
-    firstName = null,
-    lastName = null,
-    phoneNumber = null,
-    bankAccountNumber = null,
     preferredPaymentMethod = NONE,
     attachmentId = attachmentId,
 )

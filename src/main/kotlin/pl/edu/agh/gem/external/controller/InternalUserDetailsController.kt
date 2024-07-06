@@ -23,7 +23,7 @@ class InternalUserDetailsController(
     fun createUserDetails(
         @RequestBody userDetailsCreationRequest: UserDetailsCreationRequest,
     ) {
-        val attachmentId = attachmentStoreClient.getDefaultUserAttachmentId()
+        val attachmentId = attachmentStoreClient.createDefaultUserAttachment(userDetailsCreationRequest.userId)
         userDetailsService.create(userDetailsCreationRequest.toDomain(attachmentId))
     }
 }

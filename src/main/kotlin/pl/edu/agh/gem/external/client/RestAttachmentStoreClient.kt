@@ -5,12 +5,13 @@ import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod.GET
+import org.springframework.http.HttpMethod.POST
 import org.springframework.stereotype.Component
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
 import pl.edu.agh.gem.config.AttachmentStoreProperties
+import pl.edu.agh.gem.external.dto.DefaultAttachmentRequest
 import pl.edu.agh.gem.external.dto.DefaultAttachmentResponse
 import pl.edu.agh.gem.headers.HeadersUtils.withAppAcceptType
 import pl.edu.agh.gem.internal.client.AttachmentStoreClient
@@ -24,12 +25,12 @@ class RestAttachmentStoreClient(
     val attachmentStoreProperties: AttachmentStoreProperties,
 ) : AttachmentStoreClient {
     @Retry(name = "attachmentStore")
-    override fun getDefaultUserAttachmentId(): String {
+    override fun createDefaultUserAttachment(userId: String): String {
         return try {
             restTemplate.exchange(
                 resolveDefaultAttachmentIdAddress(),
-                GET,
-                HttpEntity<Any>(HttpHeaders().withAppAcceptType()),
+                POST,
+                HttpEntity(DefaultAttachmentRequest(userId), HttpHeaders().withAppAcceptType()),
                 DefaultAttachmentResponse::class.java,
             ).body?.attachmentId ?: throw AttachmentStoreClientException("While trying to retrieve attachmentId we receive empty body")
         } catch (ex: HttpClientErrorException) {

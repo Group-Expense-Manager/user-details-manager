@@ -1,6 +1,5 @@
 package pl.edu.agh.gem.external.dto
 
-import pl.edu.agh.gem.internal.model.PaymentMethod.NONE
 import pl.edu.agh.gem.internal.model.UserDetails
 
 data class UserDetailsCreationRequest(
@@ -11,11 +10,6 @@ data class UserDetailsCreationRequest(
         UserDetails(
             id = userId,
             username = username,
-            firstName = null,
-            lastName = null,
-            phoneNumber = null,
-            bankAccountNumber = null,
             attachmentId = attachmentId,
-            preferredPaymentMethod = NONE,
         )
 }
