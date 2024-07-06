@@ -23,7 +23,7 @@ import pl.edu.agh.gem.util.DummyData.ANOTHER_GROUP_ID
 import pl.edu.agh.gem.util.DummyData.ANOTHER_USER_ID
 import pl.edu.agh.gem.util.DummyData.GROUP_ID
 import pl.edu.agh.gem.util.DummyData.USER_ID
-import pl.edu.agh.gem.util.createUserDetails
+import pl.edu.agh.gem.util.createGroupsUserDetails
 import pl.edu.agh.gem.util.createUserGroupsResponse
 
 class ExternalUserDetailsControllerIT(
@@ -34,24 +34,9 @@ class ExternalUserDetailsControllerIT(
 
         should("get group user details") {
             // given
-
-            val ids = arrayOf("id1", "id2", "id3")
-            val usernames = listOf("name1", "name2", "name3")
-            val firstNames = listOf("firstName1", "firstName2", "firstName3")
-            val lastNames = listOf("lastName1", "lastName2", "lastName3")
-            val attachmentIds = listOf("attachmentId1", "attachmentId2", "attachmentId3")
-
-            val groupUserDetails = ids.mapIndexed { index, id ->
-                createUserDetails(
-                    id = id,
-                    username = usernames[index],
-                    firstName = firstNames[index],
-                    lastName = lastNames[index],
-                    attachmentId = attachmentIds[index],
-                )
-            }
+            val groupUserDetails = createGroupsUserDetails()
             stubUserGroupsUrl(createUserGroupsResponse(GROUP_ID, ANOTHER_GROUP_ID), USER_ID)
-            stubMembersUrl(createGroupMembersResponse(*ids), GROUP_ID)
+            stubMembersUrl(createGroupMembersResponse(*groupUserDetails.map { it.id }.toTypedArray()), GROUP_ID)
             groupUserDetails.forEach { userDetail -> userDetailsRepository.save(userDetail) }
 
             // when
@@ -62,11 +47,11 @@ class ExternalUserDetailsControllerIT(
 
             response.shouldBody<ExternalGroupUserDetailsResponse> {
                 details.size shouldBe 3
-                details.map { dto -> dto.id } shouldContainExactly ids.toList()
-                details.map { dto -> dto.username } shouldContainExactly usernames
-                details.map { dto -> dto.firstName } shouldContainExactly firstNames
-                details.map { dto -> dto.lastName } shouldContainExactly lastNames
-                details.map { dto -> dto.attachmentId } shouldContainExactly attachmentIds
+                details.map { dto -> dto.id } shouldContainExactly groupUserDetails.map { it.id }
+                details.map { dto -> dto.username } shouldContainExactly groupUserDetails.map { it.username }
+                details.map { dto -> dto.firstName } shouldContainExactly groupUserDetails.map { it.firstName }
+                details.map { dto -> dto.lastName } shouldContainExactly groupUserDetails.map { it.lastName }
+                details.map { dto -> dto.attachmentId } shouldContainExactly groupUserDetails.map { it.attachmentId }
             }
         }
 
