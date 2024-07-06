@@ -2,11 +2,11 @@ package pl.edu.agh.gem.internal.model
 
 data class UserDetailsUpdate(
     val userId: String,
-    val username: String?,
-    val firstName: String?,
-    val lastName: String?,
-    val phoneNumber: String?,
-    val bankAccountNumber: String?,
-    val preferredPaymentMethod: PaymentMethod?,
-    val attachmentId: String?,
+    val username: String? = null,
+    val firstName: String? = null,
+    val lastName: String? = null,
+    val phoneNumber: String? = null,
+    val bankAccountNumber: String? = null,
+    val preferredPaymentMethod: PaymentMethod? = null,
+    val attachmentId: String? = null,
 )

@@ -15,18 +15,18 @@ import pl.edu.agh.gem.validation.ValidationMessage.USERNAME_PATTERN_MESSAGE
 
 data class UserDetailsUpdateRequest(
     @field:NullOrUsernamePattern(USERNAME_PATTERN_MESSAGE)
-    val username: String?,
+    val username: String? = null,
     @field:NullOrNamePattern(NAME_PATTERN_MESSAGE)
-    val firstName: String?,
+    val firstName: String? = null,
     @field:NullOrNamePattern(NAME_PATTERN_MESSAGE)
-    val lastName: String?,
+    val lastName: String? = null,
     @field:NullOrPhoneNumberPattern(PHONE_NUMBER_PATTERN_MESSAGE)
-    val phoneNumber: String?,
+    val phoneNumber: String? = null,
     @field:NullOrBankAccountNumberPattern(BANK_ACCOUNT_NUMBER_PATTERN_MESSAGE)
-    val bankAccountNumber: String?,
-    val preferredPaymentMethod: PaymentMethod?,
+    val bankAccountNumber: String? = null,
+    val preferredPaymentMethod: PaymentMethod? = null,
     @field:NullOrNotBlank(ATTACHMENT_ID_NOT_BLANK)
-    val attachmentId: String?,
+    val attachmentId: String? = null,
 ) {
     fun toDomain(userId: String) = UserDetailsUpdate(
         userId = userId,
