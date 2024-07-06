@@ -25,6 +25,7 @@ import pl.edu.agh.gem.util.DummyData.ANOTHER_USER_ID
 import pl.edu.agh.gem.util.DummyData.GROUP_ID
 import pl.edu.agh.gem.util.DummyData.USER_ID
 import pl.edu.agh.gem.util.createGroupsUserDetails
+import pl.edu.agh.gem.util.createUserDetails
 import pl.edu.agh.gem.util.createUserGroupsResponse
 
 class ExternalUserDetailsControllerIT(
