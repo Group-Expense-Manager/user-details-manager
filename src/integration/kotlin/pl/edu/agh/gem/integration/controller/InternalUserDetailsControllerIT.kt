@@ -13,7 +13,7 @@ import pl.edu.agh.gem.external.dto.InternalGroupUserDetailsResponse
 import pl.edu.agh.gem.helper.group.createGroupMembersResponse
 import pl.edu.agh.gem.integration.BaseIntegrationSpec
 import pl.edu.agh.gem.integration.ability.ServiceTestClient
-import pl.edu.agh.gem.integration.ability.stubDefaultAttachmentIdUrl
+import pl.edu.agh.gem.integration.ability.stubDefaultAttachmentUrl
 import pl.edu.agh.gem.integration.ability.stubMembersUrl
 import pl.edu.agh.gem.internal.persistance.UserDetailsRepository
 import pl.edu.agh.gem.internal.service.MissingUserDetailsException
@@ -21,8 +21,8 @@ import pl.edu.agh.gem.util.DummyData.ANOTHER_USER_ID
 import pl.edu.agh.gem.util.DummyData.GROUP_ID
 import pl.edu.agh.gem.util.DummyData.USER_ID
 import pl.edu.agh.gem.util.createDefaultAttachmentResponse
-import pl.edu.agh.gem.util.createUserDetailRequest
-import pl.edu.agh.gem.util.createUserDetails
+import pl.edu.agh.gem.util.createGroupsUserDetails
+import pl.edu.agh.gem.util.createUserDetailsCreationRequest
 
 class InternalUserDetailsControllerIT(
     private val service: ServiceTestClient,
@@ -31,8 +31,8 @@ class InternalUserDetailsControllerIT(
     {
         should("create user details") {
             // given
-            val userDetailsRequest = createUserDetailRequest()
-            stubDefaultAttachmentIdUrl(createDefaultAttachmentResponse())
+            val userDetailsRequest = createUserDetailsCreationRequest()
+            stubDefaultAttachmentUrl(createDefaultAttachmentResponse(), USER_ID)
 
             // when
             val response = service.createUserDetails(userDetailsRequest)
@@ -43,22 +43,9 @@ class InternalUserDetailsControllerIT(
 
         should("get group user details") {
             // given
+            val groupUserDetails = createGroupsUserDetails()
 
-            val ids = arrayOf("id1", "id2", "id3")
-            val usernames = listOf("name1", "name2", "name3")
-            val firstNames = listOf("firstName1", "firstName2", "firstName3")
-            val lastNames = listOf("lastName1", "lastName2", "lastName3")
-
-            val groupUserDetails = ids.mapIndexed { index, id ->
-                createUserDetails(
-                    id = id,
-                    username = usernames[index],
-                    firstName = firstNames[index],
-                    lastName = lastNames[index],
-                )
-            }
-
-            stubMembersUrl(createGroupMembersResponse(*ids), GROUP_ID)
+            stubMembersUrl(createGroupMembersResponse(*groupUserDetails.map { it.id }.toTypedArray()), GROUP_ID)
             groupUserDetails.forEach { userDetail -> userDetailsRepository.save(userDetail) }
 
             // when
@@ -69,10 +56,10 @@ class InternalUserDetailsControllerIT(
 
             response.shouldBody<InternalGroupUserDetailsResponse> {
                 details.size shouldBe 3
-                details.map { dto -> dto.id } shouldContainExactly ids.toList()
-                details.map { dto -> dto.username } shouldContainExactly usernames
-                details.map { dto -> dto.firstName } shouldContainExactly firstNames
-                details.map { dto -> dto.lastName } shouldContainExactly lastNames
+                details.map { dto -> dto.id } shouldContainExactly groupUserDetails.map { it.id }
+                details.map { dto -> dto.username } shouldContainExactly groupUserDetails.map { it.username }
+                details.map { dto -> dto.firstName } shouldContainExactly groupUserDetails.map { it.firstName }
+                details.map { dto -> dto.lastName } shouldContainExactly groupUserDetails.map { it.lastName }
             }
         }
 

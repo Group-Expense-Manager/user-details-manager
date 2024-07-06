@@ -10,7 +10,7 @@ import pl.edu.agh.gem.internal.model.UserDetails
 import pl.edu.agh.gem.util.DummyData.ATTACHMENT_ID
 import pl.edu.agh.gem.util.DummyData.USER_ID
 
-fun createUserDetailRequest(
+fun createUserDetailsCreationRequest(
     id: String = USER_ID,
     username: String = "user",
 ) = UserDetailsCreationRequest(
@@ -47,6 +47,21 @@ fun createUserDetails(
     preferredPaymentMethod = preferredPaymentMethod,
     attachmentId = attachmentId,
 )
+
+fun createGroupsUserDetails(
+    ids: List<String> = listOf("id1", "id2", "id3"),
+    usernames: List<String> = listOf("name1", "name2", "name3"),
+    firstNames: List<String> = listOf("firstName1", "firstName2", "firstName3"),
+    lastNames: List<String> = listOf("lastName1", "lastName2", "lastName3"),
+): List<UserDetails> =
+    ids.mapIndexed { index, id ->
+        createUserDetails(
+            id = id,
+            username = usernames[index],
+            firstName = firstNames[index],
+            lastName = lastNames[index],
+        )
+    }
 
 fun createBasicUserDetailsEntity(
     id: String = USER_ID,
