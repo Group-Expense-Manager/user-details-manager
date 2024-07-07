@@ -1,9 +1,6 @@
 package pl.edu.agh.gem.external.dto
 
-import pl.edu.agh.gem.external.dto.validation.bankaccountnumber.NullOrBankAccountNumberPattern
-import pl.edu.agh.gem.external.dto.validation.name.NullOrNamePattern
-import pl.edu.agh.gem.external.dto.validation.phonenumber.NullOrPhoneNumberPattern
-import pl.edu.agh.gem.external.dto.validation.username.NullOrUsernamePattern
+import pl.edu.agh.gem.annotation.nullorpattern.NullOrPattern
 import pl.edu.agh.gem.internal.model.PaymentMethod
 import pl.edu.agh.gem.internal.model.UserDetailsUpdate
 import pl.edu.agh.gem.validation.ValidationMessage.BANK_ACCOUNT_NUMBER_PATTERN_MESSAGE
@@ -12,15 +9,15 @@ import pl.edu.agh.gem.validation.ValidationMessage.PHONE_NUMBER_PATTERN_MESSAGE
 import pl.edu.agh.gem.validation.ValidationMessage.USERNAME_PATTERN_MESSAGE
 
 data class UserDetailsUpdateRequest(
-    @field:NullOrUsernamePattern(USERNAME_PATTERN_MESSAGE)
+    @field:NullOrPattern(message = USERNAME_PATTERN_MESSAGE, pattern = "^[a-zA-Z0-9_.+-]{3,20}$")
     val username: String? = null,
-    @field:NullOrNamePattern(NAME_PATTERN_MESSAGE)
+    @field:NullOrPattern(message = NAME_PATTERN_MESSAGE, pattern = "^[A-Z][a-zA-Z' -]{1,19}$")
     val firstName: String? = null,
-    @field:NullOrNamePattern(NAME_PATTERN_MESSAGE)
+    @field:NullOrPattern(message = NAME_PATTERN_MESSAGE, pattern = "^[A-Z][a-zA-Z' -]{1,19}$")
     val lastName: String? = null,
-    @field:NullOrPhoneNumberPattern(PHONE_NUMBER_PATTERN_MESSAGE)
+    @field:NullOrPattern(message = PHONE_NUMBER_PATTERN_MESSAGE, pattern = "^\\d{9,12}$")
     val phoneNumber: String? = null,
-    @field:NullOrBankAccountNumberPattern(BANK_ACCOUNT_NUMBER_PATTERN_MESSAGE)
+    @field:NullOrPattern(message = BANK_ACCOUNT_NUMBER_PATTERN_MESSAGE, pattern = "^\\d{15,34}$")
     val bankAccountNumber: String? = null,
     val preferredPaymentMethod: PaymentMethod? = null,
 ) {
