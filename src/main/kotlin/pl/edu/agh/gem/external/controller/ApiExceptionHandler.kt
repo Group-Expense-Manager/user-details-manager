@@ -4,7 +4,7 @@ import org.springframework.core.Ordered.LOWEST_PRECEDENCE
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.FORBIDDEN
-import org.springframework.http.HttpStatus.NOT_FOUND
+import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -21,7 +21,7 @@ class ApiExceptionHandler {
 
     @ExceptionHandler(MissingUserDetailsException::class)
     fun handleMissingUserDetailsException(exception: MissingUserDetailsException): ResponseEntity<SimpleErrorsHolder> {
-        return ResponseEntity(handleError(exception), NOT_FOUND)
+        return ResponseEntity(handleError(exception), INTERNAL_SERVER_ERROR)
     }
 
     @ExceptionHandler(UserWithoutGroupAccessException::class)

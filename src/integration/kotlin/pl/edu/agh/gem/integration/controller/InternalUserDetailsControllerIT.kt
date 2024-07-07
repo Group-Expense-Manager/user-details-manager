@@ -4,7 +4,7 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import org.springframework.http.HttpStatus.CREATED
-import org.springframework.http.HttpStatus.NOT_FOUND
+import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import org.springframework.http.HttpStatus.OK
 import pl.edu.agh.gem.assertion.shouldBody
 import pl.edu.agh.gem.assertion.shouldHaveErrors
@@ -63,7 +63,7 @@ class InternalUserDetailsControllerIT(
             }
         }
 
-        should("return NOT_FOUND when user detail doesnt exist") {
+        should("return NOT_FOUND when user details doesnt exist") {
             // given
             stubMembersUrl(createGroupMembersResponse(USER_ID, ANOTHER_USER_ID), GROUP_ID)
 
@@ -71,7 +71,7 @@ class InternalUserDetailsControllerIT(
             val response = service.getInternalGroupUserDetails(GROUP_ID)
 
             // then
-            response shouldHaveHttpStatus NOT_FOUND
+            response shouldHaveHttpStatus INTERNAL_SERVER_ERROR
             response shouldHaveErrors {
                 errors shouldHaveSize 1
                 errors.first().code shouldBe MissingUserDetailsException::class.simpleName

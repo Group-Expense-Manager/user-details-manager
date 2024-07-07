@@ -6,7 +6,7 @@ import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.FORBIDDEN
-import org.springframework.http.HttpStatus.NOT_FOUND
+import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import org.springframework.http.HttpStatus.OK
 import pl.edu.agh.gem.assertion.shouldBody
 import pl.edu.agh.gem.assertion.shouldHaveErrors
@@ -67,7 +67,7 @@ class ExternalUserDetailsControllerIT(
             }
         }
 
-        should("return NOT_FOUND when user detail doesn't exist") {
+        should("return INTERNAL_SERVER_ERROR when user details doesn't exist") {
             // given
             stubUserGroupsUrl(createUserGroupsResponse(GROUP_ID, ANOTHER_GROUP_ID), USER_ID)
             stubMembersUrl(createGroupMembersResponse(USER_ID, ANOTHER_USER_ID), GROUP_ID)
@@ -76,7 +76,7 @@ class ExternalUserDetailsControllerIT(
             val response = service.getExternalGroupUserDetails(createGemUser(USER_ID), GROUP_ID)
 
             // then
-            response shouldHaveHttpStatus NOT_FOUND
+            response shouldHaveHttpStatus INTERNAL_SERVER_ERROR
             response shouldHaveErrors {
                 errors shouldHaveSize 1
                 errors.first().code shouldBe MissingUserDetailsException::class.simpleName
@@ -121,7 +121,7 @@ class ExternalUserDetailsControllerIT(
             }
         }
 
-        should("return NOT_FOUND when user details doesn't exist") {
+        should("return INTERNAL_SERVER_ERROR when user details doesn't exist") {
             // given
             val user = createGemUser(USER_ID)
 
@@ -129,7 +129,7 @@ class ExternalUserDetailsControllerIT(
             val response = service.getUserDetails(user)
 
             // then
-            response shouldHaveHttpStatus NOT_FOUND
+            response shouldHaveHttpStatus INTERNAL_SERVER_ERROR
             response shouldHaveErrors {
                 errors shouldHaveSize 1
                 errors.first().code shouldBe MissingUserDetailsException::class.simpleName
@@ -193,7 +193,7 @@ class ExternalUserDetailsControllerIT(
             }
         }
 
-        should("return NOT_FOUND when user details doesn't exist") {
+        should("return INTERNAL_SERVER_ERROR when user details doesn't exist") {
             // given
             val user = createGemUser(USER_ID)
             stubMembersUrl(createGroupMembersResponse(USER_ID, ANOTHER_USER_ID), GROUP_ID)
@@ -202,7 +202,7 @@ class ExternalUserDetailsControllerIT(
             val response = service.getGroupMemberDetails(user, GROUP_ID, ANOTHER_USER_ID)
 
             // then
-            response shouldHaveHttpStatus NOT_FOUND
+            response shouldHaveHttpStatus INTERNAL_SERVER_ERROR
             response shouldHaveErrors {
                 errors shouldHaveSize 1
                 errors.first().code shouldBe MissingUserDetailsException::class.simpleName
@@ -222,7 +222,7 @@ class ExternalUserDetailsControllerIT(
             response shouldHaveHttpStatus OK
         }
 
-        should("return NOT_FOUND when user details doesn't exist") {
+        should("return INTERNAL_SERVER_ERROR when user details doesn't exist") {
             // given
             val user = createGemUser(USER_ID)
             val updateRequest = createUserDetailsUpdateRequest(USER_ID)
@@ -231,7 +231,7 @@ class ExternalUserDetailsControllerIT(
             val response = service.updateGroupUserDetails(user, updateRequest)
 
             // then
-            response shouldHaveHttpStatus NOT_FOUND
+            response shouldHaveHttpStatus INTERNAL_SERVER_ERROR
             response shouldHaveErrors {
                 errors shouldHaveSize 1
                 errors.first().code shouldBe MissingUserDetailsException::class.simpleName
