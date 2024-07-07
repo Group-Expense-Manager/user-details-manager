@@ -33,7 +33,6 @@ import pl.edu.agh.gem.util.createGroupsUserDetails
 import pl.edu.agh.gem.util.createUserDetails
 import pl.edu.agh.gem.util.createUserDetailsUpdateRequest
 import pl.edu.agh.gem.util.createUserGroupsResponse
-import pl.edu.agh.gem.validation.ValidationMessage.ATTACHMENT_ID_NOT_BLANK
 import pl.edu.agh.gem.validation.ValidationMessage.BANK_ACCOUNT_NUMBER_PATTERN_MESSAGE
 import pl.edu.agh.gem.validation.ValidationMessage.NAME_PATTERN_MESSAGE
 import pl.edu.agh.gem.validation.ValidationMessage.PHONE_NUMBER_PATTERN_MESSAGE
@@ -262,8 +261,6 @@ class ExternalUserDetailsControllerIT(
                     createEmptyUserDetailsUpdateRequest(bankAccountNumber = "0000111122223333444455556666777788889"),
                 ),
                 Pair(BANK_ACCOUNT_NUMBER_PATTERN_MESSAGE, createEmptyUserDetailsUpdateRequest(bankAccountNumber = "000011112f")),
-                Pair(ATTACHMENT_ID_NOT_BLANK, createEmptyUserDetailsUpdateRequest(attachmentId = "")),
-
             ) { (expectedMessage, userDetailsUpdateRequest) ->
                 // when
                 val response = service.updateGroupUserDetails(createGemUser(), userDetailsUpdateRequest)

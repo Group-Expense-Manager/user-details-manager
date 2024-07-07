@@ -35,7 +35,7 @@ class UserDetailsService(
             phoneNumber = userDetailsUpdate.phoneNumber ?: userDetails.phoneNumber,
             bankAccountNumber = userDetailsUpdate.bankAccountNumber ?: userDetails.bankAccountNumber,
             preferredPaymentMethod = userDetailsUpdate.preferredPaymentMethod ?: userDetails.preferredPaymentMethod,
-            attachmentId = userDetailsUpdate.attachmentId ?: userDetails.attachmentId,
+            attachmentId = userDetails.attachmentId,
         )
 
         userDetailsRepository.save(updatedUserDetails)

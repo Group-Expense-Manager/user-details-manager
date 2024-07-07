@@ -22,7 +22,6 @@ class UserDetailsUpdateRequestTest : ShouldSpec({
             it.phoneNumber shouldBe userDetailsUpdateRequest.phoneNumber
             it.bankAccountNumber shouldBe userDetailsUpdateRequest.bankAccountNumber
             it.preferredPaymentMethod shouldBe userDetailsUpdateRequest.preferredPaymentMethod
-            it.attachmentId shouldBe userDetailsUpdateRequest.attachmentId
         }
     }
 },)

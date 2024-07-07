@@ -115,7 +115,6 @@ class UserDetailsServiceTest : ShouldSpec({
             phoneNumber = null,
             bankAccountNumber = null,
             preferredPaymentMethod = null,
-            attachmentId = null,
         )
         val expectedUserDetails = createUserDetails(
             id = USER_ID,

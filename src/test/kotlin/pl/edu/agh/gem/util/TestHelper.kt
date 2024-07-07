@@ -99,7 +99,6 @@ fun createUserDetailsUpdateRequest(
     phoneNumber: String = "123123213",
     bankAccountNumber: String = "21322343000000000000",
     preferredPaymentMethod: PaymentMethod = CASH,
-    attachmentId: String = ATTACHMENT_ID,
 ) = UserDetailsUpdateRequest(
     username = username,
     firstName = firstName,
@@ -107,7 +106,6 @@ fun createUserDetailsUpdateRequest(
     phoneNumber = phoneNumber,
     bankAccountNumber = bankAccountNumber,
     preferredPaymentMethod = preferredPaymentMethod,
-    attachmentId = attachmentId,
 )
 
 fun createEmptyUserDetailsUpdateRequest(
@@ -117,7 +115,6 @@ fun createEmptyUserDetailsUpdateRequest(
     phoneNumber: String? = null,
     bankAccountNumber: String? = null,
     preferredPaymentMethod: PaymentMethod? = null,
-    attachmentId: String? = null,
 ) = UserDetailsUpdateRequest(
     username = username,
     firstName = firstName,
@@ -125,7 +122,6 @@ fun createEmptyUserDetailsUpdateRequest(
     phoneNumber = phoneNumber,
     bankAccountNumber = bankAccountNumber,
     preferredPaymentMethod = preferredPaymentMethod,
-    attachmentId = attachmentId,
 )
 
 fun createUserDetailsUpdate(
@@ -136,7 +132,6 @@ fun createUserDetailsUpdate(
     phoneNumber: String? = "123123213",
     bankAccountNumber: String? = "2132 2343 0000 0000 0000",
     preferredPaymentMethod: PaymentMethod? = CASH,
-    attachmentId: String? = ATTACHMENT_ID,
 ) = UserDetailsUpdate(
     userId = userId,
     username = username,
@@ -145,7 +140,6 @@ fun createUserDetailsUpdate(
     phoneNumber = phoneNumber,
     bankAccountNumber = bankAccountNumber,
     preferredPaymentMethod = preferredPaymentMethod,
-    attachmentId = attachmentId,
 )
 
 object DummyData {

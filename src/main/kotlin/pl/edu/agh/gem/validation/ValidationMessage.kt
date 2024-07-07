@@ -6,5 +6,4 @@ object ValidationMessage {
         "containing only letters, apostrophes, spaces, or hyphens"
     const val PHONE_NUMBER_PATTERN_MESSAGE = "Phone number must contain only digits and be 9 to 12 characters long"
     const val BANK_ACCOUNT_NUMBER_PATTERN_MESSAGE = "Bank account number must contain only digits and be 15 to 34 characters long"
-    const val ATTACHMENT_ID_NOT_BLANK = "Attachment ID must not be blank"
 }

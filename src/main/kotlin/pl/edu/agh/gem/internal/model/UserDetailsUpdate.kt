@@ -8,5 +8,4 @@ data class UserDetailsUpdate(
     val phoneNumber: String? = null,
     val bankAccountNumber: String? = null,
     val preferredPaymentMethod: PaymentMethod? = null,
-    val attachmentId: String? = null,
 )

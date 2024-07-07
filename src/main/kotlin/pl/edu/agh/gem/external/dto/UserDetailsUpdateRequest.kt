@@ -1,13 +1,11 @@
 package pl.edu.agh.gem.external.dto
 
-import pl.edu.agh.gem.annotation.nullorblank.NullOrNotBlank
 import pl.edu.agh.gem.external.dto.validation.bankaccountnumber.NullOrBankAccountNumberPattern
 import pl.edu.agh.gem.external.dto.validation.name.NullOrNamePattern
 import pl.edu.agh.gem.external.dto.validation.phonenumber.NullOrPhoneNumberPattern
 import pl.edu.agh.gem.external.dto.validation.username.NullOrUsernamePattern
 import pl.edu.agh.gem.internal.model.PaymentMethod
 import pl.edu.agh.gem.internal.model.UserDetailsUpdate
-import pl.edu.agh.gem.validation.ValidationMessage.ATTACHMENT_ID_NOT_BLANK
 import pl.edu.agh.gem.validation.ValidationMessage.BANK_ACCOUNT_NUMBER_PATTERN_MESSAGE
 import pl.edu.agh.gem.validation.ValidationMessage.NAME_PATTERN_MESSAGE
 import pl.edu.agh.gem.validation.ValidationMessage.PHONE_NUMBER_PATTERN_MESSAGE
@@ -25,8 +23,6 @@ data class UserDetailsUpdateRequest(
     @field:NullOrBankAccountNumberPattern(BANK_ACCOUNT_NUMBER_PATTERN_MESSAGE)
     val bankAccountNumber: String? = null,
     val preferredPaymentMethod: PaymentMethod? = null,
-    @field:NullOrNotBlank(ATTACHMENT_ID_NOT_BLANK)
-    val attachmentId: String? = null,
 ) {
     fun toDomain(userId: String) = UserDetailsUpdate(
         userId = userId,
@@ -36,6 +32,5 @@ data class UserDetailsUpdateRequest(
         phoneNumber = phoneNumber,
         bankAccountNumber = bankAccountNumber,
         preferredPaymentMethod = preferredPaymentMethod,
-        attachmentId = attachmentId,
     )
 }
