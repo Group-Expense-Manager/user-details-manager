@@ -57,7 +57,7 @@ fun createGroupsUserDetails(
     usernames: List<String> = listOf("name1", "name2", "name3"),
     firstNames: List<String> = listOf("firstName1", "firstName2", "firstName3"),
     lastNames: List<String> = listOf("lastName1", "lastName2", "lastName3"),
-    attachments: List<String> = listOf("attachmentId1", "attachmentId2", "attachmentId3")
+    attachments: List<String> = listOf("attachmentId1", "attachmentId2", "attachmentId3"),
 ): List<UserDetails> =
     ids.mapIndexed { index, id ->
         createUserDetails(
@@ -65,7 +65,7 @@ fun createGroupsUserDetails(
             username = usernames[index],
             firstName = firstNames[index],
             lastName = lastNames[index],
-            attachmentId = attachments[index]
+            attachmentId = attachments[index],
         )
     }
 
