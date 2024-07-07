@@ -11,6 +11,7 @@ import pl.edu.agh.gem.assertion.shouldHaveErrors
 import pl.edu.agh.gem.assertion.shouldHaveHttpStatus
 import pl.edu.agh.gem.exception.UserWithoutGroupAccessException
 import pl.edu.agh.gem.external.dto.ExternalGroupUserDetailsResponse
+import pl.edu.agh.gem.external.dto.UserDetailsResponse
 import pl.edu.agh.gem.helper.group.createGroupMembersResponse
 import pl.edu.agh.gem.helper.user.createGemUser
 import pl.edu.agh.gem.integration.BaseIntegrationSpec
@@ -24,6 +25,7 @@ import pl.edu.agh.gem.util.DummyData.ANOTHER_USER_ID
 import pl.edu.agh.gem.util.DummyData.GROUP_ID
 import pl.edu.agh.gem.util.DummyData.USER_ID
 import pl.edu.agh.gem.util.createGroupsUserDetails
+import pl.edu.agh.gem.util.createUserDetails
 import pl.edu.agh.gem.util.createUserGroupsResponse
 
 class ExternalUserDetailsControllerIT(
@@ -83,6 +85,44 @@ class ExternalUserDetailsControllerIT(
             response shouldHaveErrors {
                 errors shouldHaveSize 1
                 errors.first().code shouldBe UserWithoutGroupAccessException::class.simpleName
+            }
+        }
+
+        should("get user details") {
+            // given
+            val user = createGemUser(USER_ID)
+            val userDetails = createUserDetails(USER_ID)
+            userDetailsRepository.save(userDetails)
+
+            // when
+            val response = service.getUserDetails(user)
+
+            // then
+            response shouldHaveHttpStatus OK
+            response.shouldBody<UserDetailsResponse> {
+                id shouldBe userDetails.id
+                username shouldBe userDetails.username
+                firstName shouldBe userDetails.firstName
+                lastName shouldBe userDetails.lastName
+                phoneNumber shouldBe userDetails.phoneNumber
+                bankAccountNumber shouldBe userDetails.bankAccountNumber
+                preferredPaymentMethod shouldBe userDetails.preferredPaymentMethod
+                attachmentId shouldBe userDetails.attachmentId
+            }
+        }
+
+        should("return NOT_FOUND when user details doesn't exist") {
+            // given
+            val user = createGemUser(USER_ID)
+
+            // when
+            val response = service.getUserDetails(user)
+
+            // then
+            response shouldHaveHttpStatus NOT_FOUND
+            response shouldHaveErrors {
+                errors shouldHaveSize 1
+                errors.first().code shouldBe MissingUserDetailsException::class.simpleName
             }
         }
     },
