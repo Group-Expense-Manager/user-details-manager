@@ -127,7 +127,7 @@ class ExternalUserDetailsControllerIT(
             }
         }
 
-        should("get group member  details") {
+        should("get group member details") {
             // given
             val user = createGemUser(USER_ID)
             val userDetails = createUserDetails(ANOTHER_USER_ID)
@@ -155,7 +155,7 @@ class ExternalUserDetailsControllerIT(
         should("return FORBIDDEN when user is not a group member") {
             // given
             val user = createGemUser(USER_ID)
-            stubUserGroupsUrl(createUserGroupsResponse(ANOTHER_GROUP_ID), USER_ID)
+            stubMembersUrl(createGroupMembersResponse(ANOTHER_USER_ID), GROUP_ID)
 
             // when
             val response = service.getGroupMemberDetails(user, GROUP_ID, ANOTHER_USER_ID)
@@ -171,7 +171,6 @@ class ExternalUserDetailsControllerIT(
         should("return FORBIDDEN when other user is not a group member") {
             // given
             val user = createGemUser(USER_ID)
-            stubUserGroupsUrl(createUserGroupsResponse(GROUP_ID), USER_ID)
             stubMembersUrl(createGroupMembersResponse(USER_ID), GROUP_ID)
 
             // when
@@ -188,7 +187,6 @@ class ExternalUserDetailsControllerIT(
         should("return NOT_FOUND when user details doesn't exist") {
             // given
             val user = createGemUser(USER_ID)
-            stubUserGroupsUrl(createUserGroupsResponse(GROUP_ID), USER_ID)
             stubMembersUrl(createGroupMembersResponse(USER_ID, ANOTHER_USER_ID), GROUP_ID)
 
             // when

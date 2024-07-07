@@ -50,18 +50,15 @@ class ExternalUserDetailsController(
         @PathVariable groupMemberId: String,
 
     ): UserDetailsResponse {
-        userId.checkIfUserHaveAccess(groupId)
-        groupMemberId.checkIfUserIsGroupMember(groupId)
+        val groupMembers = groupManagerClient.getMembers(groupId).members
+        groupMembers.find { it.id == userId } ?: throw UserWithoutGroupAccessException(userId)
+        groupMembers.find { it.id == groupMemberId } ?: throw UserNotGroupMemberException(groupMemberId, groupId)
 
         return userDetailsService.getUserDetails(groupMemberId).toUserDetailsResponse()
     }
 
     private fun String.checkIfUserHaveAccess(groupId: String) {
-        groupManagerClient.getGroups(this).find { it.groupId == groupId } ?: throw UserWithoutGroupAccessException(groupId)
-    }
-
-    private fun String.checkIfUserIsGroupMember(groupId: String) {
-        groupManagerClient.getMembers(groupId).members.find { it.id == this } ?: throw UserNotGroupMemberException(this, groupId)
+        groupManagerClient.getGroups(this).find { it.groupId == groupId } ?: throw UserWithoutGroupAccessException(this)
     }
 }
 
