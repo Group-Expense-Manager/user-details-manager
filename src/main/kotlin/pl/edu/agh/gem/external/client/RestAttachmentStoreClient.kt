@@ -11,7 +11,6 @@ import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
 import org.springframework.web.client.RestTemplate
 import pl.edu.agh.gem.config.AttachmentStoreProperties
-import pl.edu.agh.gem.external.dto.DefaultAttachmentRequest
 import pl.edu.agh.gem.external.dto.DefaultAttachmentResponse
 import pl.edu.agh.gem.headers.HeadersUtils.withAppAcceptType
 import pl.edu.agh.gem.internal.client.AttachmentStoreClient
@@ -28,11 +27,11 @@ class RestAttachmentStoreClient(
     override fun createDefaultUserAttachment(userId: String): String {
         return try {
             restTemplate.exchange(
-                resolveDefaultAttachmentIdAddress(),
+                resolveDefaultAttachmentIdAddress(userId),
                 POST,
-                HttpEntity(DefaultAttachmentRequest(userId), HttpHeaders().withAppAcceptType()),
+                HttpEntity<Any>(HttpHeaders().withAppAcceptType()),
                 DefaultAttachmentResponse::class.java,
-            ).body?.attachmentId ?: throw AttachmentStoreClientException("While trying to retrieve attachmentId we receive empty body")
+            ).body?.id ?: throw AttachmentStoreClientException("While trying to retrieve attachmentId we receive empty body")
         } catch (ex: HttpClientErrorException) {
             logger.warn(ex) { "Client side exception while trying to retrieve attachmentId" }
             throw AttachmentStoreClientException(ex.message)
@@ -45,8 +44,8 @@ class RestAttachmentStoreClient(
         }
     }
 
-    private fun resolveDefaultAttachmentIdAddress() =
-        "${attachmentStoreProperties.url}$INTERNAL/attachments"
+    private fun resolveDefaultAttachmentIdAddress(userId: String) =
+        "${attachmentStoreProperties.url}$INTERNAL/users/$userId/generate"
 
     companion object {
         private val logger = KotlinLogging.logger {}
