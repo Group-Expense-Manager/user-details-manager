@@ -67,7 +67,7 @@ class ExternalUserDetailsControllerIT(
             }
         }
 
-        should("return INTERNAL_SERVER_ERROR when user details doesn't exist") {
+        should("return INTERNAL_SERVER_ERROR when getting group user details and user details doesn't exist") {
             // given
             stubUserGroupsUrl(createUserGroupsResponse(GROUP_ID, ANOTHER_GROUP_ID), USER_ID)
             stubMembersUrl(createGroupMembersResponse(USER_ID, ANOTHER_USER_ID), GROUP_ID)
@@ -83,7 +83,7 @@ class ExternalUserDetailsControllerIT(
             }
         }
 
-        should("return FORBIDDEN when user is not a group member") {
+        should("return FORBIDDEN when getting group user details and user is not a group member") {
             // given
             stubUserGroupsUrl(createUserGroupsResponse(ANOTHER_GROUP_ID), USER_ID)
 
@@ -121,7 +121,7 @@ class ExternalUserDetailsControllerIT(
             }
         }
 
-        should("return INTERNAL_SERVER_ERROR when user details doesn't exist") {
+        should("return INTERNAL_SERVER_ERROR when getting user details and user details doesn't exist") {
             // given
             val user = createGemUser(USER_ID)
 
@@ -161,7 +161,7 @@ class ExternalUserDetailsControllerIT(
             }
         }
 
-        should("return FORBIDDEN when user is not a group member") {
+        should("return FORBIDDEN when getting group member user details and user is not a group member") {
             // given
             val user = createGemUser(USER_ID)
             stubMembersUrl(createGroupMembersResponse(ANOTHER_USER_ID), GROUP_ID)
@@ -177,7 +177,7 @@ class ExternalUserDetailsControllerIT(
             }
         }
 
-        should("return FORBIDDEN when other user is not a group member") {
+        should("return FORBIDDEN when getting group member user details and other user is not a group member") {
             // given
             val user = createGemUser(USER_ID)
             stubMembersUrl(createGroupMembersResponse(USER_ID), GROUP_ID)
@@ -193,7 +193,7 @@ class ExternalUserDetailsControllerIT(
             }
         }
 
-        should("return INTERNAL_SERVER_ERROR when user details doesn't exist") {
+        should("return INTERNAL_SERVER_ERROR when getting group member details and  members' user details doesn't exist") {
             // given
             val user = createGemUser(USER_ID)
             stubMembersUrl(createGroupMembersResponse(USER_ID, ANOTHER_USER_ID), GROUP_ID)
@@ -222,7 +222,7 @@ class ExternalUserDetailsControllerIT(
             response shouldHaveHttpStatus OK
         }
 
-        should("return INTERNAL_SERVER_ERROR when user details doesn't exist") {
+        should("return INTERNAL_SERVER_ERROR when updating user details and user details doesn't exist") {
             // given
             val user = createGemUser(USER_ID)
             val updateRequest = createUserDetailsUpdateRequest(USER_ID)
