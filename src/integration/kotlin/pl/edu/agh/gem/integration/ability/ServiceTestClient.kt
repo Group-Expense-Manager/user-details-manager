@@ -31,7 +31,7 @@ class ServiceTestClient(applicationContext: WebApplicationContext) {
 
     fun getInternalGroupUserDetails(groupId: String): ResponseSpec {
         return webClient.get()
-            .uri { it.path("$INTERNAL/user-details/$groupId").build() }
+            .uri { it.path("$INTERNAL/user-details/groups/$groupId").build() }
             .headers {
                 it.withAppAcceptType()
             }
@@ -40,7 +40,7 @@ class ServiceTestClient(applicationContext: WebApplicationContext) {
 
     fun getExternalGroupUserDetails(user: GemUser, groupId: String): ResponseSpec {
         return webClient.get()
-            .uri { it.path("$EXTERNAL/user-details/$groupId").build() }
+            .uri { it.path("$EXTERNAL/user-details/groups/$groupId").build() }
             .headers {
                 it.withValidatedUser(user).withAppAcceptType()
             }
@@ -50,6 +50,15 @@ class ServiceTestClient(applicationContext: WebApplicationContext) {
     fun getUserDetails(user: GemUser): ResponseSpec {
         return webClient.get()
             .uri { it.path("$EXTERNAL/user-details").build() }
+            .headers {
+                it.withValidatedUser(user).withAppAcceptType()
+            }
+            .exchange()
+    }
+
+    fun getGroupMemberDetails(user: GemUser, groupId: String, groupMemberId: String): ResponseSpec {
+        return webClient.get()
+            .uri { it.path("$EXTERNAL/user-details/groups/$groupId/members/$groupMemberId").build() }
             .headers {
                 it.withValidatedUser(user).withAppAcceptType()
             }

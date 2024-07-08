@@ -10,6 +10,7 @@ import pl.edu.agh.gem.assertion.shouldBody
 import pl.edu.agh.gem.assertion.shouldHaveErrors
 import pl.edu.agh.gem.assertion.shouldHaveHttpStatus
 import pl.edu.agh.gem.exception.UserWithoutGroupAccessException
+import pl.edu.agh.gem.external.controller.UserNotGroupMemberException
 import pl.edu.agh.gem.external.dto.ExternalGroupUserDetailsResponse
 import pl.edu.agh.gem.external.dto.UserDetailsResponse
 import pl.edu.agh.gem.helper.group.createGroupMembersResponse
@@ -117,6 +118,79 @@ class ExternalUserDetailsControllerIT(
 
             // when
             val response = service.getUserDetails(user)
+
+            // then
+            response shouldHaveHttpStatus NOT_FOUND
+            response shouldHaveErrors {
+                errors shouldHaveSize 1
+                errors.first().code shouldBe MissingUserDetailsException::class.simpleName
+            }
+        }
+
+        should("get group member details") {
+            // given
+            val user = createGemUser(USER_ID)
+            val userDetails = createUserDetails(ANOTHER_USER_ID)
+            userDetailsRepository.save(userDetails)
+            stubUserGroupsUrl(createUserGroupsResponse(GROUP_ID), USER_ID)
+            stubMembersUrl(createGroupMembersResponse(USER_ID, ANOTHER_USER_ID), GROUP_ID)
+
+            // when
+            val response = service.getGroupMemberDetails(user, GROUP_ID, ANOTHER_USER_ID)
+
+            // then
+            response shouldHaveHttpStatus OK
+            response.shouldBody<UserDetailsResponse> {
+                id shouldBe userDetails.id
+                username shouldBe userDetails.username
+                firstName shouldBe userDetails.firstName
+                lastName shouldBe userDetails.lastName
+                phoneNumber shouldBe userDetails.phoneNumber
+                bankAccountNumber shouldBe userDetails.bankAccountNumber
+                preferredPaymentMethod shouldBe userDetails.preferredPaymentMethod
+                attachmentId shouldBe userDetails.attachmentId
+            }
+        }
+
+        should("return FORBIDDEN when user is not a group member") {
+            // given
+            val user = createGemUser(USER_ID)
+            stubMembersUrl(createGroupMembersResponse(ANOTHER_USER_ID), GROUP_ID)
+
+            // when
+            val response = service.getGroupMemberDetails(user, GROUP_ID, ANOTHER_USER_ID)
+
+            // then
+            response shouldHaveHttpStatus FORBIDDEN
+            response shouldHaveErrors {
+                errors shouldHaveSize 1
+                errors.first().code shouldBe UserWithoutGroupAccessException::class.simpleName
+            }
+        }
+
+        should("return FORBIDDEN when other user is not a group member") {
+            // given
+            val user = createGemUser(USER_ID)
+            stubMembersUrl(createGroupMembersResponse(USER_ID), GROUP_ID)
+
+            // when
+            val response = service.getGroupMemberDetails(user, GROUP_ID, ANOTHER_USER_ID)
+
+            // then
+            response shouldHaveHttpStatus FORBIDDEN
+            response shouldHaveErrors {
+                errors shouldHaveSize 1
+                errors.first().code shouldBe UserNotGroupMemberException::class.simpleName
+            }
+        }
+
+        should("return NOT_FOUND when user details doesn't exist") {
+            // given
+            val user = createGemUser(USER_ID)
+            stubMembersUrl(createGroupMembersResponse(USER_ID, ANOTHER_USER_ID), GROUP_ID)
+
+            // when
+            val response = service.getGroupMemberDetails(user, GROUP_ID, ANOTHER_USER_ID)
 
             // then
             response shouldHaveHttpStatus NOT_FOUND

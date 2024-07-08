@@ -24,7 +24,7 @@ class ExternalUserDetailsController(
     private val groupManagerClient: GroupManagerClient,
 ) {
 
-    @GetMapping("/{groupId}", produces = [APPLICATION_JSON_INTERNAL_VER_1])
+    @GetMapping("groups/{groupId}", produces = [APPLICATION_JSON_INTERNAL_VER_1])
     @ResponseStatus(OK)
     fun getGroupUserDetails(
         @GemUserId userId: String,
@@ -42,7 +42,25 @@ class ExternalUserDetailsController(
         return userDetailsService.getUserDetails(userId).toUserDetailsResponse()
     }
 
+    @GetMapping("groups/{groupId}/members/{groupMemberId}", produces = [APPLICATION_JSON_INTERNAL_VER_1])
+    @ResponseStatus(OK)
+    fun getGroupMemberDetails(
+        @GemUserId userId: String,
+        @PathVariable groupId: String,
+        @PathVariable groupMemberId: String,
+
+    ): UserDetailsResponse {
+        val groupMembers = groupManagerClient.getMembers(groupId).members
+        groupMembers.find { it.id == userId } ?: throw UserWithoutGroupAccessException(userId)
+        groupMembers.find { it.id == groupMemberId } ?: throw UserNotGroupMemberException(groupMemberId, groupId)
+
+        return userDetailsService.getUserDetails(groupMemberId).toUserDetailsResponse()
+    }
+
     private fun String.checkIfUserHaveAccess(groupId: String) {
-        groupManagerClient.getGroups(this).find { it.groupId == groupId } ?: throw UserWithoutGroupAccessException(groupId)
+        groupManagerClient.getGroups(this).find { it.groupId == groupId } ?: throw UserWithoutGroupAccessException(this)
     }
 }
+
+class UserNotGroupMemberException(userId: String, groupId: String) :
+    RuntimeException("User with id: $userId is not a member of group with id: $groupId")
