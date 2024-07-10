@@ -1,5 +1,6 @@
 package pl.edu.agh.gem.external.dto
 
+import jakarta.validation.constraints.Pattern
 import pl.edu.agh.gem.annotation.nullorpattern.NullOrPattern
 import pl.edu.agh.gem.internal.model.PaymentMethod
 import pl.edu.agh.gem.internal.model.UserDetailsUpdate
@@ -9,8 +10,8 @@ import pl.edu.agh.gem.validation.ValidationMessage.PHONE_NUMBER_PATTERN_MESSAGE
 import pl.edu.agh.gem.validation.ValidationMessage.USERNAME_PATTERN_MESSAGE
 
 data class UserDetailsUpdateRequest(
-    @field:NullOrPattern(message = USERNAME_PATTERN_MESSAGE, pattern = "^[a-zA-Z0-9_.+-]{3,20}$")
-    val username: String? = null,
+    @field:Pattern(message = USERNAME_PATTERN_MESSAGE, regexp = "^[a-zA-Z0-9_.+-]{3,20}$")
+    val username: String,
     @field:NullOrPattern(message = NAME_PATTERN_MESSAGE, pattern = "^[A-Z][a-zA-Z' -]{1,19}$")
     val firstName: String? = null,
     @field:NullOrPattern(message = NAME_PATTERN_MESSAGE, pattern = "^[A-Z][a-zA-Z' -]{1,19}$")
@@ -19,7 +20,7 @@ data class UserDetailsUpdateRequest(
     val phoneNumber: String? = null,
     @field:NullOrPattern(message = BANK_ACCOUNT_NUMBER_PATTERN_MESSAGE, pattern = "^\\d{15,34}$")
     val bankAccountNumber: String? = null,
-    val preferredPaymentMethod: PaymentMethod? = null,
+    val preferredPaymentMethod: PaymentMethod,
 ) {
     fun toDomain(userId: String) = UserDetailsUpdate(
         userId = userId,

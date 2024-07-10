@@ -29,12 +29,12 @@ class UserDetailsService(
 
         val updatedUserDetails = UserDetails(
             id = userDetails.id,
-            username = userDetailsUpdate.username ?: userDetails.username,
-            firstName = userDetailsUpdate.firstName ?: userDetails.firstName,
-            lastName = userDetailsUpdate.lastName ?: userDetails.lastName,
-            phoneNumber = userDetailsUpdate.phoneNumber ?: userDetails.phoneNumber,
-            bankAccountNumber = userDetailsUpdate.bankAccountNumber ?: userDetails.bankAccountNumber,
-            preferredPaymentMethod = userDetailsUpdate.preferredPaymentMethod ?: userDetails.preferredPaymentMethod,
+            username = userDetailsUpdate.username,
+            firstName = userDetailsUpdate.firstName,
+            lastName = userDetailsUpdate.lastName,
+            phoneNumber = userDetailsUpdate.phoneNumber,
+            bankAccountNumber = userDetailsUpdate.bankAccountNumber,
+            preferredPaymentMethod = userDetailsUpdate.preferredPaymentMethod,
             attachmentId = userDetails.attachmentId,
         )
 

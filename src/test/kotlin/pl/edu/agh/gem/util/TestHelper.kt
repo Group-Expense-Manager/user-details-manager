@@ -14,6 +14,7 @@ import pl.edu.agh.gem.internal.model.UserDetailsUpdate
 import pl.edu.agh.gem.util.DummyData.ANOTHER_GROUP_ID
 import pl.edu.agh.gem.util.DummyData.ATTACHMENT_ID
 import pl.edu.agh.gem.util.DummyData.GROUP_ID
+import pl.edu.agh.gem.util.DummyData.USERNAME
 import pl.edu.agh.gem.util.DummyData.USER_ID
 
 fun createUserDetailsCreationRequest(
@@ -109,12 +110,12 @@ fun createUserDetailsUpdateRequest(
 )
 
 fun createEmptyUserDetailsUpdateRequest(
-    username: String? = null,
+    username: String = USERNAME,
     firstName: String? = null,
     lastName: String? = null,
     phoneNumber: String? = null,
     bankAccountNumber: String? = null,
-    preferredPaymentMethod: PaymentMethod? = null,
+    preferredPaymentMethod: PaymentMethod = NONE,
 ) = UserDetailsUpdateRequest(
     username = username,
     firstName = firstName,
@@ -126,12 +127,12 @@ fun createEmptyUserDetailsUpdateRequest(
 
 fun createUserDetailsUpdate(
     userId: String = USER_ID,
-    username: String? = "user",
+    username: String = USERNAME,
     firstName: String? = "firstName",
     lastName: String? = "lastName",
     phoneNumber: String? = "123123213",
     bankAccountNumber: String? = "2132 2343 0000 0000 0000",
-    preferredPaymentMethod: PaymentMethod? = CASH,
+    preferredPaymentMethod: PaymentMethod = NONE,
 ) = UserDetailsUpdate(
     userId = userId,
     username = username,
@@ -145,7 +146,7 @@ fun createUserDetailsUpdate(
 object DummyData {
     const val USER_ID = "userId"
     const val ANOTHER_USER_ID = "anotherUserId"
-
+    const val USERNAME = "userName"
     const val ATTACHMENT_ID = "attachmentId"
     const val GROUP_ID = "groupId"
     const val ANOTHER_GROUP_ID = "anotherGroupId"
