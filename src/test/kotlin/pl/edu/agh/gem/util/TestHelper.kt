@@ -83,7 +83,7 @@ fun createBasicUserDetailsEntity(
 fun createDefaultAttachmentResponse(
     attachmentId: String = ATTACHMENT_ID,
 ) = DefaultAttachmentResponse(
-    attachmentId = attachmentId,
+    id = attachmentId,
 )
 
 fun createUserGroupsResponse(
