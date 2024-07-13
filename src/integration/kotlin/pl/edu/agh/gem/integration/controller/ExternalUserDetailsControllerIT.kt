@@ -3,6 +3,7 @@ package pl.edu.agh.gem.integration.controller
 import io.kotest.datatest.withData
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.FORBIDDEN
@@ -16,6 +17,7 @@ import pl.edu.agh.gem.exception.UserWithoutGroupAccessException
 import pl.edu.agh.gem.external.controller.UserNotGroupMemberException
 import pl.edu.agh.gem.external.dto.ExternalGroupUserDetailsResponse
 import pl.edu.agh.gem.external.dto.UserDetailsResponse
+import pl.edu.agh.gem.external.dto.UserDetailsUpdateResponse
 import pl.edu.agh.gem.helper.group.createGroupMembersResponse
 import pl.edu.agh.gem.helper.user.createGemUser
 import pl.edu.agh.gem.integration.BaseIntegrationSpec
@@ -220,6 +222,19 @@ class ExternalUserDetailsControllerIT(
 
             // then
             response shouldHaveHttpStatus OK
+            response.shouldBody<UserDetailsUpdateResponse> {
+                userId shouldBe USER_ID
+            }
+
+            userDetailsRepository.findById(USER_ID).also {
+                it.shouldNotBeNull()
+                it.username shouldBe updateRequest.username
+                it.firstName shouldBe updateRequest.firstName
+                it.lastName shouldBe updateRequest.lastName
+                it.bankAccountNumber shouldBe updateRequest.bankAccountNumber
+                it.preferredPaymentMethod shouldBe updateRequest.preferredPaymentMethod
+                it.phoneNumber shouldBe updateRequest.phoneNumber
+            }
         }
 
         should("return INTERNAL_SERVER_ERROR when updating user details and user details doesn't exist") {

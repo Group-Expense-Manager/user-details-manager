@@ -24,7 +24,7 @@ class UserDetailsService(
         return userDetailsRepository.findById(userId) ?: throw MissingUserDetailsException(userId)
     }
 
-    fun updateUserDetails(userDetailsUpdate: UserDetailsUpdate) {
+    fun updateUserDetails(userDetailsUpdate: UserDetailsUpdate): UserDetails {
         val userDetails = userDetailsRepository.findById(userDetailsUpdate.userId) ?: throw MissingUserDetailsException(userDetailsUpdate.userId)
 
         val updatedUserDetails = UserDetails(
@@ -38,7 +38,7 @@ class UserDetailsService(
             attachmentId = userDetails.attachmentId,
         )
 
-        userDetailsRepository.save(updatedUserDetails)
+        return userDetailsRepository.save(updatedUserDetails)
     }
 }
 

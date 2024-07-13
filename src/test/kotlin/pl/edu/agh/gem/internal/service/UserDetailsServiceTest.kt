@@ -128,11 +128,13 @@ class UserDetailsServiceTest : ShouldSpec({
 
         )
         whenever(userDetailsRepository.findById(USER_ID)).thenReturn(userDetails)
+        whenever(userDetailsRepository.save(expectedUserDetails)).thenReturn(expectedUserDetails)
 
         // when
-        userDetailsService.updateUserDetails(userDetailsUpdate)
+        val result = userDetailsService.updateUserDetails(userDetailsUpdate)
 
         // then
+        result shouldBe expectedUserDetails
         verify(userDetailsRepository, times(1)).findById(USER_ID)
         verify(userDetailsRepository, times(1)).save(expectedUserDetails)
     }
