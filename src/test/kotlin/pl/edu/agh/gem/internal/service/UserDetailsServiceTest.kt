@@ -108,10 +108,10 @@ class UserDetailsServiceTest : ShouldSpec({
 
         val userDetails = createBasicUserDetails(USER_ID, oldUserName, oldAttachmentId)
         val userDetailsUpdate = createUserDetailsUpdate(
-            USER_ID,
-            newUserName,
-            newFirstName,
-            newLastName,
+            userId = USER_ID,
+            username = newUserName,
+            firstName = newFirstName,
+            lastName = newLastName,
             phoneNumber = null,
             bankAccountNumber = null,
             preferredPaymentMethod = NONE,
