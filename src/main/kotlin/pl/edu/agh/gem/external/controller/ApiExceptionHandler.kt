@@ -2,13 +2,16 @@ package pl.edu.agh.gem.external.controller
 
 import org.springframework.core.Ordered.LOWEST_PRECEDENCE
 import org.springframework.core.annotation.Order
+import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.FORBIDDEN
-import org.springframework.http.HttpStatus.NOT_FOUND
+import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import pl.edu.agh.gem.error.SimpleErrorsHolder
 import pl.edu.agh.gem.error.handleError
+import pl.edu.agh.gem.error.handleNotValidException
 import pl.edu.agh.gem.exception.UserWithoutGroupAccessException
 import pl.edu.agh.gem.internal.service.MissingUserDetailsException
 
@@ -18,7 +21,7 @@ class ApiExceptionHandler {
 
     @ExceptionHandler(MissingUserDetailsException::class)
     fun handleMissingUserDetailsException(exception: MissingUserDetailsException): ResponseEntity<SimpleErrorsHolder> {
-        return ResponseEntity(handleError(exception), NOT_FOUND)
+        return ResponseEntity(handleError(exception), INTERNAL_SERVER_ERROR)
     }
 
     @ExceptionHandler(UserWithoutGroupAccessException::class)
@@ -33,5 +36,12 @@ class ApiExceptionHandler {
         exception: UserNotGroupMemberException,
     ): ResponseEntity<SimpleErrorsHolder> {
         return ResponseEntity(handleError(exception), FORBIDDEN)
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleMethodArgumentNotValidException(
+        exception: MethodArgumentNotValidException,
+    ): ResponseEntity<SimpleErrorsHolder> {
+        return ResponseEntity(handleNotValidException(exception), BAD_REQUEST)
     }
 }
