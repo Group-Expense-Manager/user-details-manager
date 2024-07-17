@@ -57,7 +57,7 @@ class ApiExceptionHandler {
     }
 
     @ExceptionHandler(AttachmentStoreClientException::class)
-    fun handleUserDetailsManagerClientException(
+    fun handleAttachmentStoreClientException(
         exception: AttachmentStoreClientException,
     ): ResponseEntity<SimpleErrorsHolder> {
         return ResponseEntity(handleError(exception), INTERNAL_SERVER_ERROR)
