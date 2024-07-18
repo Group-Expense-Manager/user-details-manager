@@ -74,4 +74,13 @@ class ServiceTestClient(applicationContext: WebApplicationContext) {
             .bodyValue(body)
             .exchange()
     }
+
+    fun getUsername(userId: String): ResponseSpec {
+        return webClient.get()
+            .uri { it.path("$INTERNAL/user-details/username/$userId").build() }
+            .headers {
+                it.withAppAcceptType()
+            }
+            .exchange()
+    }
 }
