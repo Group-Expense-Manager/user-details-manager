@@ -12,6 +12,7 @@ import pl.edu.agh.gem.assertion.shouldBody
 import pl.edu.agh.gem.assertion.shouldHaveErrors
 import pl.edu.agh.gem.assertion.shouldHaveHttpStatus
 import pl.edu.agh.gem.external.dto.InternalGroupUserDetailsResponse
+import pl.edu.agh.gem.external.dto.InternalUsernameResponse
 import pl.edu.agh.gem.helper.group.createGroupMembersResponse
 import pl.edu.agh.gem.integration.BaseIntegrationSpec
 import pl.edu.agh.gem.integration.ability.ServiceTestClient
@@ -26,6 +27,7 @@ import pl.edu.agh.gem.util.DummyData.USERNAME
 import pl.edu.agh.gem.util.DummyData.USER_ID
 import pl.edu.agh.gem.util.createDefaultAttachmentResponse
 import pl.edu.agh.gem.util.createGroupsUserDetails
+import pl.edu.agh.gem.util.createUserDetails
 import pl.edu.agh.gem.util.createUserDetailsCreationRequest
 
 class InternalUserDetailsControllerIT(
@@ -86,6 +88,34 @@ class InternalUserDetailsControllerIT(
 
             // then
             response shouldHaveHttpStatus INTERNAL_SERVER_ERROR
+            response shouldHaveErrors {
+                errors shouldHaveSize 1
+                errors.first().code shouldBe MissingUserDetailsException::class.simpleName
+            }
+        }
+
+        should("get username") {
+            // given
+            val userDetails = createUserDetails(USER_ID, USERNAME)
+            userDetailsRepository.save(userDetails)
+
+            // when
+            val response = service.getUsername(USER_ID)
+
+            // then
+            response shouldHaveHttpStatus OK
+            response.shouldBody<InternalUsernameResponse> {
+                username shouldBe USERNAME
+            }
+        }
+
+        should("return NOT_FOUND when user details doesnt exist") {
+            // given & when
+            val response = service.getUsername(USER_ID)
+
+            // then
+            response shouldHaveHttpStatus INTERNAL_SERVER_ERROR
+
             response shouldHaveErrors {
                 errors shouldHaveSize 1
                 errors.first().code shouldBe MissingUserDetailsException::class.simpleName

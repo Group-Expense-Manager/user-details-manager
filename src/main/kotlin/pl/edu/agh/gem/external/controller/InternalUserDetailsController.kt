@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import pl.edu.agh.gem.external.dto.InternalGroupUserDetailsResponse
+import pl.edu.agh.gem.external.dto.InternalUsernameResponse
 import pl.edu.agh.gem.external.dto.UserDetailsCreationRequest
 import pl.edu.agh.gem.external.dto.toInternalGroupUserDetailsResponse
+import pl.edu.agh.gem.external.dto.toInternalUsernameResponse
 import pl.edu.agh.gem.internal.client.AttachmentStoreClient
 import pl.edu.agh.gem.internal.service.UserDetailsService
 import pl.edu.agh.gem.media.InternalApiMediaType.APPLICATION_JSON_INTERNAL_VER_1
@@ -38,5 +40,13 @@ class InternalUserDetailsController(
         @PathVariable groupId: String,
     ): InternalGroupUserDetailsResponse {
         return userDetailsService.getGroupUserDetails(groupId).toInternalGroupUserDetailsResponse()
+    }
+
+    @GetMapping("/username/{userId}", produces = [APPLICATION_JSON_INTERNAL_VER_1])
+    @ResponseStatus(OK)
+    fun getUsername(
+        @PathVariable userId: String,
+    ): InternalUsernameResponse {
+        return userDetailsService.getUserDetails(userId).toInternalUsernameResponse()
     }
 }
