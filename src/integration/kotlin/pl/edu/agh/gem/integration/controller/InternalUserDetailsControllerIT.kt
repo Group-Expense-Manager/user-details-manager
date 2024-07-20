@@ -2,6 +2,8 @@ package pl.edu.agh.gem.integration.controller
 
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
@@ -15,10 +17,12 @@ import pl.edu.agh.gem.integration.BaseIntegrationSpec
 import pl.edu.agh.gem.integration.ability.ServiceTestClient
 import pl.edu.agh.gem.integration.ability.stubDefaultAttachmentUrl
 import pl.edu.agh.gem.integration.ability.stubMembersUrl
+import pl.edu.agh.gem.internal.model.PaymentMethod.NONE
 import pl.edu.agh.gem.internal.persistance.UserDetailsRepository
 import pl.edu.agh.gem.internal.service.MissingUserDetailsException
 import pl.edu.agh.gem.util.DummyData.ANOTHER_USER_ID
 import pl.edu.agh.gem.util.DummyData.GROUP_ID
+import pl.edu.agh.gem.util.DummyData.USERNAME
 import pl.edu.agh.gem.util.DummyData.USER_ID
 import pl.edu.agh.gem.util.createDefaultAttachmentResponse
 import pl.edu.agh.gem.util.createGroupsUserDetails
@@ -31,7 +35,7 @@ class InternalUserDetailsControllerIT(
     {
         should("create user details") {
             // given
-            val userDetailsRequest = createUserDetailsCreationRequest()
+            val userDetailsRequest = createUserDetailsCreationRequest(USER_ID, USERNAME)
             stubDefaultAttachmentUrl(createDefaultAttachmentResponse(), USER_ID)
 
             // when
@@ -39,6 +43,16 @@ class InternalUserDetailsControllerIT(
 
             // then
             response shouldHaveHttpStatus CREATED
+            userDetailsRepository.findById(USER_ID).also {
+                it.shouldNotBeNull()
+                it.id shouldBe USER_ID
+                it.username shouldBe USERNAME
+                it.firstName.shouldBeNull()
+                it.lastName.shouldBeNull()
+                it.phoneNumber.shouldBeNull()
+                it.bankAccountNumber.shouldBeNull()
+                it.preferredPaymentMethod shouldBe NONE
+            }
         }
 
         should("get group user details") {

@@ -13,6 +13,10 @@ import pl.edu.agh.gem.error.SimpleErrorsHolder
 import pl.edu.agh.gem.error.handleError
 import pl.edu.agh.gem.error.handleNotValidException
 import pl.edu.agh.gem.exception.UserWithoutGroupAccessException
+import pl.edu.agh.gem.internal.client.AttachmentStoreClientException
+import pl.edu.agh.gem.internal.client.GroupManagerClientException
+import pl.edu.agh.gem.internal.client.RetryableAttachmentStoreClientException
+import pl.edu.agh.gem.internal.client.RetryableGroupManagerClientException
 import pl.edu.agh.gem.internal.service.MissingUserDetailsException
 
 @ControllerAdvice
@@ -43,5 +47,33 @@ class ApiExceptionHandler {
         exception: MethodArgumentNotValidException,
     ): ResponseEntity<SimpleErrorsHolder> {
         return ResponseEntity(handleNotValidException(exception), BAD_REQUEST)
+    }
+
+    @ExceptionHandler(RetryableAttachmentStoreClientException::class)
+    fun handleRetryableAttachmentStoreClientException(
+        exception: RetryableAttachmentStoreClientException,
+    ): ResponseEntity<SimpleErrorsHolder> {
+        return ResponseEntity(handleError(exception), INTERNAL_SERVER_ERROR)
+    }
+
+    @ExceptionHandler(AttachmentStoreClientException::class)
+    fun handleAttachmentStoreClientException(
+        exception: AttachmentStoreClientException,
+    ): ResponseEntity<SimpleErrorsHolder> {
+        return ResponseEntity(handleError(exception), INTERNAL_SERVER_ERROR)
+    }
+
+    @ExceptionHandler(RetryableGroupManagerClientException::class)
+    fun handleRetryableGroupManagerClientException(
+        exception: RetryableGroupManagerClientException,
+    ): ResponseEntity<SimpleErrorsHolder> {
+        return ResponseEntity(handleError(exception), INTERNAL_SERVER_ERROR)
+    }
+
+    @ExceptionHandler(GroupManagerClientException::class)
+    fun handleGroupManagerClientException(
+        exception: GroupManagerClientException,
+    ): ResponseEntity<SimpleErrorsHolder> {
+        return ResponseEntity(handleError(exception), INTERNAL_SERVER_ERROR)
     }
 }
