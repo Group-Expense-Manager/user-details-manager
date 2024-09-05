@@ -103,7 +103,7 @@ class UserDetailsServiceTest : ShouldSpec({
         val oldUserName = "name1"
         val newUserName = "name2"
         val oldAttachmentId = "123"
-        val newFirstName = "John"
+        val newFirstName = "Łukasz"
         val newLastName = "Doe"
 
         val userDetails = createBasicUserDetails(USER_ID, oldUserName, oldAttachmentId)
