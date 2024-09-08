@@ -41,7 +41,7 @@ fun createUserDetails(
     firstName: String? = "FirstName",
     lastName: String? = "LastName",
     phoneNumber: String? = "+48123123213",
-    bankAccountNumber: String? = "PL32 2343 0000 0000 0000",
+    bankAccountNumber: String? = "PL322343000000000000",
     preferredPaymentMethod: PaymentMethod = CASH,
     attachmentId: String = ATTACHMENT_ID,
 ) = UserDetails(
@@ -131,7 +131,7 @@ fun createUserDetailsUpdate(
     firstName: String? = "NewFirstName",
     lastName: String? = "NewLastName",
     phoneNumber: String? = "+48123123213",
-    bankAccountNumber: String? = "PL32 2343 0000 0000 0000",
+    bankAccountNumber: String? = "PL322343000000000000",
     preferredPaymentMethod: PaymentMethod = NONE,
 ) = UserDetailsUpdate(
     userId = userId,
