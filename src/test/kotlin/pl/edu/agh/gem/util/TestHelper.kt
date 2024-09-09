@@ -38,10 +38,10 @@ fun createBasicUserDetails(
 fun createUserDetails(
     id: String = USER_ID,
     username: String = "user",
-    firstName: String? = "firstName",
-    lastName: String? = "lastName",
-    phoneNumber: String? = "123123213",
-    bankAccountNumber: String? = "2132 2343 0000 0000 0000",
+    firstName: String? = "FirstName",
+    lastName: String? = "LastName",
+    phoneNumber: String? = "+48123123213",
+    bankAccountNumber: String? = "PL322343000000000000",
     preferredPaymentMethod: PaymentMethod = CASH,
     attachmentId: String = ATTACHMENT_ID,
 ) = UserDetails(
@@ -58,8 +58,8 @@ fun createUserDetails(
 fun createGroupsUserDetails(
     ids: List<String> = listOf("id1", "id2", "id3"),
     usernames: List<String> = listOf("name1", "name2", "name3"),
-    firstNames: List<String> = listOf("firstName1", "firstName2", "firstName3"),
-    lastNames: List<String> = listOf("lastName1", "lastName2", "lastName3"),
+    firstNames: List<String> = listOf("FirstName1", "FirstName2", "fFirstName3"),
+    lastNames: List<String> = listOf("LastName1", "LastName2", "LastName3"),
     attachments: List<String> = listOf("attachmentId1", "attachmentId2", "attachmentId3"),
 ): List<UserDetails> =
     ids.mapIndexed { index, id ->
@@ -95,10 +95,10 @@ fun createUserGroupsResponse(
 
 fun createUserDetailsUpdateRequest(
     username: String = "user",
-    firstName: String = "FirstName",
+    firstName: String = "Paweł",
     lastName: String = "LastName",
-    phoneNumber: String = "123123213",
-    bankAccountNumber: String = "21322343000000000000",
+    phoneNumber: String = "+48123123123",
+    bankAccountNumber: String = "PL21322343000000000000",
     preferredPaymentMethod: PaymentMethod = CASH,
 ) = UserDetailsUpdateRequest(
     username = username,
@@ -128,10 +128,10 @@ fun createEmptyUserDetailsUpdateRequest(
 fun createUserDetailsUpdate(
     userId: String = USER_ID,
     username: String = USERNAME,
-    firstName: String? = "firstName",
-    lastName: String? = "lastName",
-    phoneNumber: String? = "123123213",
-    bankAccountNumber: String? = "2132 2343 0000 0000 0000",
+    firstName: String? = "NewFirstName",
+    lastName: String? = "NewLastName",
+    phoneNumber: String? = "+48123123213",
+    bankAccountNumber: String? = "PL322343000000000000",
     preferredPaymentMethod: PaymentMethod = NONE,
 ) = UserDetailsUpdate(
     userId = userId,

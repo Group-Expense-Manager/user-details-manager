@@ -13,10 +13,8 @@ import pl.edu.agh.gem.exception.UserWithoutGroupAccessException
 import pl.edu.agh.gem.external.dto.ExternalGroupUserDetailsResponse
 import pl.edu.agh.gem.external.dto.UserDetailsResponse
 import pl.edu.agh.gem.external.dto.UserDetailsUpdateRequest
-import pl.edu.agh.gem.external.dto.UserDetailsUpdateResponse
 import pl.edu.agh.gem.external.dto.toExternalGroupUserDetailsResponse
 import pl.edu.agh.gem.external.dto.toUserDetailsResponse
-import pl.edu.agh.gem.external.dto.toUserDetailsUpdateResponse
 import pl.edu.agh.gem.internal.client.GroupManagerClient
 import pl.edu.agh.gem.internal.service.UserDetailsService
 import pl.edu.agh.gem.media.InternalApiMediaType.APPLICATION_JSON_INTERNAL_VER_1
@@ -69,8 +67,8 @@ class ExternalUserDetailsController(
         @GemUserId userId: String,
         @Valid @RequestBody
         userDetailsUpdateRequest: UserDetailsUpdateRequest,
-    ): UserDetailsUpdateResponse {
-        return userDetailsService.updateUserDetails(userDetailsUpdateRequest.toDomain(userId)).toUserDetailsUpdateResponse()
+    ): UserDetailsResponse {
+        return userDetailsService.updateUserDetails(userDetailsUpdateRequest.toDomain(userId)).toUserDetailsResponse()
     }
 
     private fun String.checkIfUserHaveAccess(groupId: String) {
