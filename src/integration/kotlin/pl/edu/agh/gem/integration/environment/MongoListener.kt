@@ -7,7 +7,7 @@ import io.kotest.core.listeners.AfterTestListener
 import io.kotest.core.listeners.BeforeProjectListener
 import io.kotest.core.test.TestCase
 import io.kotest.core.test.TestResult
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.bson.Document
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.containers.wait.strategy.Wait
