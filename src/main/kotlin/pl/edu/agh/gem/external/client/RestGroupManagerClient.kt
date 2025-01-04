@@ -1,7 +1,7 @@
 package pl.edu.agh.gem.external.client
 
-import io.github.resilience4j.retry.annotation.Retry
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.github.resilience4j.retry.annotation.Retry
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -71,11 +71,9 @@ class RestGroupManagerClient(
         }
     }
 
-    private fun resolveGroupMembersAddress(groupId: String) =
-        "${groupManagerProperties.url}$INTERNAL/members/$groupId"
+    private fun resolveGroupMembersAddress(groupId: String) = "${groupManagerProperties.url}$INTERNAL/members/$groupId"
 
-    private fun resolveUserGroupsAddress(userId: String) =
-        "${groupManagerProperties.url}$INTERNAL/groups/users/$userId"
+    private fun resolveUserGroupsAddress(userId: String) = "${groupManagerProperties.url}$INTERNAL/groups/users/$userId"
 
     fun GroupMembersResponse.toGroupMembers() = GroupMembers(members = members.map { GroupMember(it.id) })
 

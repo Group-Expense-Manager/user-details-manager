@@ -13,33 +13,33 @@ import pl.edu.agh.gem.util.createUserGroupsResponse
 class GroupManagerClientIT(
     private val groupManagerClient: GroupManagerClient,
 ) : BaseIntegrationSpec({
-    should("get group members ids") {
-        // given
-        val members = arrayOf(USER_ID, ANOTHER_USER_ID)
-        val groupMembersResponse = createGroupMembersResponse(*members)
-        stubMembersUrl(groupMembersResponse, GROUP_ID)
+        should("get group members ids") {
+            // given
+            val members = arrayOf(USER_ID, ANOTHER_USER_ID)
+            val groupMembersResponse = createGroupMembersResponse(*members)
+            stubMembersUrl(groupMembersResponse, GROUP_ID)
 
-        // when
-        val result = groupManagerClient.getMembers(GROUP_ID)
+            // when
+            val result = groupManagerClient.getMembers(GROUP_ID)
 
-        // then
-        result.members.all {
-            it.id in members
+            // then
+            result.members.all {
+                it.id in members
+            }
         }
-    }
 
-    should("get user groups") {
-        // given
-        val userGroups = arrayOf(GROUP_ID, ANOTHER_USER_ID)
-        val userGroupsResponse = createUserGroupsResponse(GROUP_ID, ANOTHER_USER_ID)
-        stubUserGroupsUrl(userGroupsResponse, USER_ID)
+        should("get user groups") {
+            // given
+            val userGroups = arrayOf(GROUP_ID, ANOTHER_USER_ID)
+            val userGroupsResponse = createUserGroupsResponse(GROUP_ID, ANOTHER_USER_ID)
+            stubUserGroupsUrl(userGroupsResponse, USER_ID)
 
-        // when
-        val result = groupManagerClient.getGroups(USER_ID)
+            // when
+            val result = groupManagerClient.getGroups(USER_ID)
 
-        // then
-        result.all {
-            it.groupId in userGroups
+            // then
+            result.all {
+                it.groupId in userGroups
+            }
         }
-    }
-},)
+    })

@@ -11,15 +11,15 @@ import pl.edu.agh.gem.util.createDefaultAttachmentResponse
 class AttachmentStoreClientIT(
     private val attachmentStoreClient: AttachmentStoreClient,
 ) : BaseIntegrationSpec({
-    should("get attachmentId") {
-        // given
-        val defaultAttachmentResponse = createDefaultAttachmentResponse()
-        stubDefaultAttachmentUrl(defaultAttachmentResponse, USER_ID)
+        should("get attachmentId") {
+            // given
+            val defaultAttachmentResponse = createDefaultAttachmentResponse()
+            stubDefaultAttachmentUrl(defaultAttachmentResponse, USER_ID)
 
-        // when
-        val result = attachmentStoreClient.createDefaultUserAttachment(USER_ID)
+            // when
+            val result = attachmentStoreClient.createDefaultUserAttachment(USER_ID)
 
-        // then
-        result shouldBe ATTACHMENT_ID
-    }
-},)
+            // then
+            result shouldBe ATTACHMENT_ID
+        }
+    })

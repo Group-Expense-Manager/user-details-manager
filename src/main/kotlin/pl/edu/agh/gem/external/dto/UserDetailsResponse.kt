@@ -14,13 +14,14 @@ data class UserDetailsResponse(
     val attachmentId: String,
 )
 
-fun UserDetails.toUserDetailsResponse() = UserDetailsResponse(
-    id = id,
-    username = username,
-    firstName = firstName,
-    lastName = lastName,
-    phoneNumber = phoneNumber,
-    bankAccountNumber = bankAccountNumber,
-    preferredPaymentMethod = preferredPaymentMethod,
-    attachmentId = attachmentId,
-)
+fun UserDetails.toUserDetailsResponse() =
+    UserDetailsResponse(
+        id = id,
+        username = username,
+        firstName = firstName,
+        lastName = lastName,
+        phoneNumber = phoneNumber,
+        bankAccountNumber = bankAccountNumber,
+        preferredPaymentMethod = preferredPaymentMethod,
+        attachmentId = attachmentId,
+    )

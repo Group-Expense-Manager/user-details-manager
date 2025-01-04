@@ -1,7 +1,7 @@
 package pl.edu.agh.gem.external.client
 
-import io.github.resilience4j.retry.annotation.Retry
 import io.github.oshai.kotlinlogging.KotlinLogging
+import io.github.resilience4j.retry.annotation.Retry
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -46,8 +46,7 @@ class RestAttachmentStoreClient(
         }
     }
 
-    private fun resolveDefaultAttachmentIdAddress(userId: String) =
-        "${attachmentStoreProperties.url}$INTERNAL/users/$userId/generate"
+    private fun resolveDefaultAttachmentIdAddress(userId: String) = "${attachmentStoreProperties.url}$INTERNAL/users/$userId/generate"
 
     companion object {
         private val logger = KotlinLogging.logger {}

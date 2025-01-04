@@ -22,58 +22,43 @@ import pl.edu.agh.gem.internal.service.MissingUserDetailsException
 @ControllerAdvice
 @Order(LOWEST_PRECEDENCE)
 class ApiExceptionHandler {
-
     @ExceptionHandler(MissingUserDetailsException::class)
     fun handleMissingUserDetailsException(exception: MissingUserDetailsException): ResponseEntity<SimpleErrorsHolder> {
         return ResponseEntity(handleError(exception), INTERNAL_SERVER_ERROR)
     }
 
     @ExceptionHandler(UserWithoutGroupAccessException::class)
-    fun handleUserWithoutGroupAccessException(
-        exception: UserWithoutGroupAccessException,
-    ): ResponseEntity<SimpleErrorsHolder> {
+    fun handleUserWithoutGroupAccessException(exception: UserWithoutGroupAccessException): ResponseEntity<SimpleErrorsHolder> {
         return ResponseEntity(handleError(exception), FORBIDDEN)
     }
 
     @ExceptionHandler(UserNotGroupMemberException::class)
-    fun handleUserNotGroupMemberException(
-        exception: UserNotGroupMemberException,
-    ): ResponseEntity<SimpleErrorsHolder> {
+    fun handleUserNotGroupMemberException(exception: UserNotGroupMemberException): ResponseEntity<SimpleErrorsHolder> {
         return ResponseEntity(handleError(exception), FORBIDDEN)
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleMethodArgumentNotValidException(
-        exception: MethodArgumentNotValidException,
-    ): ResponseEntity<SimpleErrorsHolder> {
+    fun handleMethodArgumentNotValidException(exception: MethodArgumentNotValidException): ResponseEntity<SimpleErrorsHolder> {
         return ResponseEntity(handleNotValidException(exception), BAD_REQUEST)
     }
 
     @ExceptionHandler(RetryableAttachmentStoreClientException::class)
-    fun handleRetryableAttachmentStoreClientException(
-        exception: RetryableAttachmentStoreClientException,
-    ): ResponseEntity<SimpleErrorsHolder> {
+    fun handleRetryableAttachmentStoreClientException(exception: RetryableAttachmentStoreClientException): ResponseEntity<SimpleErrorsHolder> {
         return ResponseEntity(handleError(exception), INTERNAL_SERVER_ERROR)
     }
 
     @ExceptionHandler(AttachmentStoreClientException::class)
-    fun handleAttachmentStoreClientException(
-        exception: AttachmentStoreClientException,
-    ): ResponseEntity<SimpleErrorsHolder> {
+    fun handleAttachmentStoreClientException(exception: AttachmentStoreClientException): ResponseEntity<SimpleErrorsHolder> {
         return ResponseEntity(handleError(exception), INTERNAL_SERVER_ERROR)
     }
 
     @ExceptionHandler(RetryableGroupManagerClientException::class)
-    fun handleRetryableGroupManagerClientException(
-        exception: RetryableGroupManagerClientException,
-    ): ResponseEntity<SimpleErrorsHolder> {
+    fun handleRetryableGroupManagerClientException(exception: RetryableGroupManagerClientException): ResponseEntity<SimpleErrorsHolder> {
         return ResponseEntity(handleError(exception), INTERNAL_SERVER_ERROR)
     }
 
     @ExceptionHandler(GroupManagerClientException::class)
-    fun handleGroupManagerClientException(
-        exception: GroupManagerClientException,
-    ): ResponseEntity<SimpleErrorsHolder> {
+    fun handleGroupManagerClientException(exception: GroupManagerClientException): ResponseEntity<SimpleErrorsHolder> {
         return ResponseEntity(handleError(exception), INTERNAL_SERVER_ERROR)
     }
 }

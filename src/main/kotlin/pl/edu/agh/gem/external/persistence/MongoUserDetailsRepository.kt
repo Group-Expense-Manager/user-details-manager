@@ -11,7 +11,6 @@ import pl.edu.agh.gem.metrics.MeteredRepository
 @MeteredRepository
 class MongoUserDetailsRepository(
     private val mongo: MongoTemplate,
-
 ) : UserDetailsRepository {
     override fun save(userDetails: UserDetails): UserDetails {
         return mongo.save(userDetails.toEntity()).toDomain()

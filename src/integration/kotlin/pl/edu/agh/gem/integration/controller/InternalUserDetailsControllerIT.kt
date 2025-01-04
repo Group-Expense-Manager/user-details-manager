@@ -34,92 +34,92 @@ class InternalUserDetailsControllerIT(
     private val service: ServiceTestClient,
     private val userDetailsRepository: UserDetailsRepository,
 ) : BaseIntegrationSpec(
-    {
-        should("create user details") {
-            // given
-            val userDetailsRequest = createUserDetailsCreationRequest(USER_ID, USERNAME)
-            stubDefaultAttachmentUrl(createDefaultAttachmentResponse(), USER_ID)
+        {
+            should("create user details") {
+                // given
+                val userDetailsRequest = createUserDetailsCreationRequest(USER_ID, USERNAME)
+                stubDefaultAttachmentUrl(createDefaultAttachmentResponse(), USER_ID)
 
-            // when
-            val response = service.createUserDetails(userDetailsRequest)
+                // when
+                val response = service.createUserDetails(userDetailsRequest)
 
-            // then
-            response shouldHaveHttpStatus CREATED
-            userDetailsRepository.findById(USER_ID).also {
-                it.shouldNotBeNull()
-                it.id shouldBe USER_ID
-                it.username shouldBe USERNAME
-                it.firstName.shouldBeNull()
-                it.lastName.shouldBeNull()
-                it.phoneNumber.shouldBeNull()
-                it.bankAccountNumber.shouldBeNull()
-                it.preferredPaymentMethod shouldBe NONE
+                // then
+                response shouldHaveHttpStatus CREATED
+                userDetailsRepository.findById(USER_ID).also {
+                    it.shouldNotBeNull()
+                    it.id shouldBe USER_ID
+                    it.username shouldBe USERNAME
+                    it.firstName.shouldBeNull()
+                    it.lastName.shouldBeNull()
+                    it.phoneNumber.shouldBeNull()
+                    it.bankAccountNumber.shouldBeNull()
+                    it.preferredPaymentMethod shouldBe NONE
+                }
             }
-        }
 
-        should("get group user details") {
-            // given
-            val groupUserDetails = createGroupsUserDetails()
+            should("get group user details") {
+                // given
+                val groupUserDetails = createGroupsUserDetails()
 
-            stubMembersUrl(createGroupMembersResponse(*groupUserDetails.map { it.id }.toTypedArray()), GROUP_ID)
-            groupUserDetails.forEach { userDetail -> userDetailsRepository.save(userDetail) }
+                stubMembersUrl(createGroupMembersResponse(*groupUserDetails.map { it.id }.toTypedArray()), GROUP_ID)
+                groupUserDetails.forEach { userDetail -> userDetailsRepository.save(userDetail) }
 
-            // when
-            val response = service.getInternalGroupUserDetails(GROUP_ID)
+                // when
+                val response = service.getInternalGroupUserDetails(GROUP_ID)
 
-            // then
-            response shouldHaveHttpStatus OK
+                // then
+                response shouldHaveHttpStatus OK
 
-            response.shouldBody<InternalGroupUserDetailsResponse> {
-                details.size shouldBe 3
-                details.map { dto -> dto.id } shouldContainExactly groupUserDetails.map { it.id }
-                details.map { dto -> dto.username } shouldContainExactly groupUserDetails.map { it.username }
-                details.map { dto -> dto.firstName } shouldContainExactly groupUserDetails.map { it.firstName }
-                details.map { dto -> dto.lastName } shouldContainExactly groupUserDetails.map { it.lastName }
+                response.shouldBody<InternalGroupUserDetailsResponse> {
+                    details.size shouldBe 3
+                    details.map { dto -> dto.id } shouldContainExactly groupUserDetails.map { it.id }
+                    details.map { dto -> dto.username } shouldContainExactly groupUserDetails.map { it.username }
+                    details.map { dto -> dto.firstName } shouldContainExactly groupUserDetails.map { it.firstName }
+                    details.map { dto -> dto.lastName } shouldContainExactly groupUserDetails.map { it.lastName }
+                }
             }
-        }
 
-        should("return NOT_FOUND when user details doesnt exist") {
-            // given
-            stubMembersUrl(createGroupMembersResponse(USER_ID, ANOTHER_USER_ID), GROUP_ID)
+            should("return NOT_FOUND when user details doesnt exist") {
+                // given
+                stubMembersUrl(createGroupMembersResponse(USER_ID, ANOTHER_USER_ID), GROUP_ID)
 
-            // when
-            val response = service.getInternalGroupUserDetails(GROUP_ID)
+                // when
+                val response = service.getInternalGroupUserDetails(GROUP_ID)
 
-            // then
-            response shouldHaveHttpStatus INTERNAL_SERVER_ERROR
-            response shouldHaveErrors {
-                errors shouldHaveSize 1
-                errors.first().code shouldBe MissingUserDetailsException::class.simpleName
+                // then
+                response shouldHaveHttpStatus INTERNAL_SERVER_ERROR
+                response shouldHaveErrors {
+                    errors shouldHaveSize 1
+                    errors.first().code shouldBe MissingUserDetailsException::class.simpleName
+                }
             }
-        }
 
-        should("get username") {
-            // given
-            val userDetails = createUserDetails(USER_ID, USERNAME)
-            userDetailsRepository.save(userDetails)
+            should("get username") {
+                // given
+                val userDetails = createUserDetails(USER_ID, USERNAME)
+                userDetailsRepository.save(userDetails)
 
-            // when
-            val response = service.getUsername(USER_ID)
+                // when
+                val response = service.getUsername(USER_ID)
 
-            // then
-            response shouldHaveHttpStatus OK
-            response.shouldBody<InternalUsernameResponse> {
-                username shouldBe USERNAME
+                // then
+                response shouldHaveHttpStatus OK
+                response.shouldBody<InternalUsernameResponse> {
+                    username shouldBe USERNAME
+                }
             }
-        }
 
-        should("return NOT_FOUND when user details doesnt exist") {
-            // given & when
-            val response = service.getUsername(USER_ID)
+            should("return NOT_FOUND when user details doesnt exist") {
+                // given & when
+                val response = service.getUsername(USER_ID)
 
-            // then
-            response shouldHaveHttpStatus INTERNAL_SERVER_ERROR
+                // then
+                response shouldHaveHttpStatus INTERNAL_SERVER_ERROR
 
-            response shouldHaveErrors {
-                errors shouldHaveSize 1
-                errors.first().code shouldBe MissingUserDetailsException::class.simpleName
+                response shouldHaveErrors {
+                    errors shouldHaveSize 1
+                    errors.first().code shouldBe MissingUserDetailsException::class.simpleName
+                }
             }
-        }
-    },
-)
+        },
+    )

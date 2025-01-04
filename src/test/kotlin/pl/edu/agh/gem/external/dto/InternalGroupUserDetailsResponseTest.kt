@@ -39,4 +39,4 @@ class InternalGroupUserDetailsResponseTest : ShouldSpec({
             it.map { dto -> dto.lastName } shouldContainExactly groupUserDetails.map { userDetails -> userDetails.lastName }
         }
     }
-},)
+})

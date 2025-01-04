@@ -11,9 +11,14 @@ import pl.edu.agh.gem.integration.environment.ProjectConfig.wiremock
 import pl.edu.agh.gem.paths.Paths.INTERNAL
 
 private fun getMembersUrl(groupId: String) = "$INTERNAL/members/$groupId"
+
 private fun getUserGroupsUrl(userId: String) = "$INTERNAL/groups/users/$userId"
 
-fun stubMembersUrl(body: Any?, groupId: String, statusCode: HttpStatusCode = OK) {
+fun stubMembersUrl(
+    body: Any?,
+    groupId: String,
+    statusCode: HttpStatusCode = OK,
+) {
     wiremock.stubFor(
         get(urlMatching(getMembersUrl(groupId)))
             .willReturn(
@@ -27,7 +32,11 @@ fun stubMembersUrl(body: Any?, groupId: String, statusCode: HttpStatusCode = OK)
     )
 }
 
-fun stubUserGroupsUrl(body: Any?, userId: String, statusCode: HttpStatusCode = OK) {
+fun stubUserGroupsUrl(
+    body: Any?,
+    userId: String,
+    statusCode: HttpStatusCode = OK,
+) {
     wiremock.stubFor(
         get(urlMatching(getUserGroupsUrl(userId)))
             .willReturn(

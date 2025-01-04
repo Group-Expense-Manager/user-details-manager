@@ -20,4 +20,4 @@ class UserGroupsResponseTest : ShouldSpec({
             it.map { group -> group.groupId } shouldContainExactly ids.toList()
         }
     }
-},)
+})

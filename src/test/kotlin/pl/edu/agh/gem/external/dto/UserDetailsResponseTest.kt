@@ -24,4 +24,4 @@ class UserDetailsResponseTest : ShouldSpec({
             it.attachmentId shouldBe userDetails.attachmentId
         }
     }
-},)
+})

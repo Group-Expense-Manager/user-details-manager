@@ -27,4 +27,4 @@ class UserDetailsCreationRequestTest : ShouldSpec({
             it.attachmentId shouldBe ATTACHMENT_ID
         }
     }
-},)
+})
