@@ -1,7 +1,6 @@
 package pl.edu.agh.gem.external.persistence
 
 import org.springframework.data.mongodb.core.MongoTemplate
-import org.springframework.data.mongodb.core.findById
 import org.springframework.stereotype.Repository
 import pl.edu.agh.gem.internal.model.UserDetails
 import pl.edu.agh.gem.internal.persistance.UserDetailsRepository
