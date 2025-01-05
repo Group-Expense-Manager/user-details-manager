@@ -5,6 +5,7 @@ import pl.edu.agh.gem.model.GroupMembers
 
 interface GroupManagerClient {
     fun getMembers(groupId: String): GroupMembers
+
     fun getGroups(userId: String): List<Group>
 }
 

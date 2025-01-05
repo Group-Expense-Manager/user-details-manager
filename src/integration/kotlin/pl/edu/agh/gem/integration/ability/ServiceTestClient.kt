@@ -15,9 +15,10 @@ import pl.edu.agh.gem.security.GemUser
 @Component
 @Lazy
 class ServiceTestClient(applicationContext: WebApplicationContext) {
-    private val webClient = bindToApplicationContext(applicationContext)
-        .configureClient()
-        .build()
+    private val webClient =
+        bindToApplicationContext(applicationContext)
+            .configureClient()
+            .build()
 
     fun createUserDetails(body: Any): ResponseSpec {
         return webClient.post()
@@ -38,7 +39,10 @@ class ServiceTestClient(applicationContext: WebApplicationContext) {
             .exchange()
     }
 
-    fun getExternalGroupUserDetails(user: GemUser, groupId: String): ResponseSpec {
+    fun getExternalGroupUserDetails(
+        user: GemUser,
+        groupId: String,
+    ): ResponseSpec {
         return webClient.get()
             .uri { it.path("$EXTERNAL/user-details/groups/$groupId").build() }
             .headers {
@@ -56,7 +60,11 @@ class ServiceTestClient(applicationContext: WebApplicationContext) {
             .exchange()
     }
 
-    fun getGroupMemberDetails(user: GemUser, groupId: String, groupMemberId: String): ResponseSpec {
+    fun getGroupMemberDetails(
+        user: GemUser,
+        groupId: String,
+        groupMemberId: String,
+    ): ResponseSpec {
         return webClient.get()
             .uri { it.path("$EXTERNAL/user-details/groups/$groupId/members/$groupMemberId").build() }
             .headers {
@@ -65,7 +73,10 @@ class ServiceTestClient(applicationContext: WebApplicationContext) {
             .exchange()
     }
 
-    fun updateGroupUserDetails(user: GemUser, body: Any): ResponseSpec {
+    fun updateGroupUserDetails(
+        user: GemUser,
+        body: Any,
+    ): ResponseSpec {
         return webClient.put()
             .uri { it.path("$EXTERNAL/user-details").build() }
             .headers {

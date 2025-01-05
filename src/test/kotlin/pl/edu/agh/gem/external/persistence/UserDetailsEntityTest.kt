@@ -25,4 +25,4 @@ class UserDetailsEntityTest : ShouldSpec({
             it.attachmentId shouldBe userDetailsEntity.attachmentId
         }
     }
-},)
+})

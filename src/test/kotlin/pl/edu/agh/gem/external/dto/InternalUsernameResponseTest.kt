@@ -15,4 +15,4 @@ class InternalUsernameResponseTest : ShouldSpec({
         // then
         internalUsernameResponse.username shouldBe userDetails.username
     }
-},)
+})

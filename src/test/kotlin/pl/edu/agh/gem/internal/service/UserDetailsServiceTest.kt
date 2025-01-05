@@ -107,26 +107,27 @@ class UserDetailsServiceTest : ShouldSpec({
         val newLastName = "Doe"
 
         val userDetails = createBasicUserDetails(USER_ID, oldUserName, oldAttachmentId)
-        val userDetailsUpdate = createUserDetailsUpdate(
-            userId = USER_ID,
-            username = newUserName,
-            firstName = newFirstName,
-            lastName = newLastName,
-            phoneNumber = null,
-            bankAccountNumber = null,
-            preferredPaymentMethod = NONE,
-        )
-        val expectedUserDetails = createUserDetails(
-            id = USER_ID,
-            username = newUserName,
-            firstName = newFirstName,
-            lastName = newLastName,
-            phoneNumber = null,
-            bankAccountNumber = null,
-            preferredPaymentMethod = NONE,
-            attachmentId = oldAttachmentId,
-
-        )
+        val userDetailsUpdate =
+            createUserDetailsUpdate(
+                userId = USER_ID,
+                username = newUserName,
+                firstName = newFirstName,
+                lastName = newLastName,
+                phoneNumber = null,
+                bankAccountNumber = null,
+                preferredPaymentMethod = NONE,
+            )
+        val expectedUserDetails =
+            createUserDetails(
+                id = USER_ID,
+                username = newUserName,
+                firstName = newFirstName,
+                lastName = newLastName,
+                phoneNumber = null,
+                bankAccountNumber = null,
+                preferredPaymentMethod = NONE,
+                attachmentId = oldAttachmentId,
+            )
         whenever(userDetailsRepository.findById(USER_ID)).thenReturn(userDetails)
         whenever(userDetailsRepository.save(expectedUserDetails)).thenReturn(expectedUserDetails)
 
@@ -149,4 +150,4 @@ class UserDetailsServiceTest : ShouldSpec({
         }
         verify(userDetailsRepository, times(1)).findById(USER_ID)
     }
-},)
+})

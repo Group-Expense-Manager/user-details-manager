@@ -13,13 +13,15 @@ data class InternalUserDetailsDto(
     val lastName: String?,
 )
 
-fun List<UserDetails>.toInternalGroupUserDetailsResponse() = InternalGroupUserDetailsResponse(
-    details = map { it.toInternalUserDetailsDto() },
-)
+fun List<UserDetails>.toInternalGroupUserDetailsResponse() =
+    InternalGroupUserDetailsResponse(
+        details = map { it.toInternalUserDetailsDto() },
+    )
 
-fun UserDetails.toInternalUserDetailsDto() = InternalUserDetailsDto(
-    id = id,
-    username = username,
-    firstName = firstName,
-    lastName = lastName,
-)
+fun UserDetails.toInternalUserDetailsDto() =
+    InternalUserDetailsDto(
+        id = id,
+        username = username,
+        firstName = firstName,
+        lastName = lastName,
+    )

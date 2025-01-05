@@ -24,4 +24,4 @@ class UserDetailsUpdateRequestTest : ShouldSpec({
             it.preferredPaymentMethod shouldBe userDetailsUpdateRequest.preferredPaymentMethod
         }
     }
-},)
+})

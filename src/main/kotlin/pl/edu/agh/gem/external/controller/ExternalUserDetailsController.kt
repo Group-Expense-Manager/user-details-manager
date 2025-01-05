@@ -27,7 +27,6 @@ class ExternalUserDetailsController(
     private val userDetailsService: UserDetailsService,
     private val groupManagerClient: GroupManagerClient,
 ) {
-
     @GetMapping("groups/{groupId}", produces = [APPLICATION_JSON_INTERNAL_VER_1])
     @ResponseStatus(OK)
     fun getGroupUserDetails(
@@ -52,7 +51,6 @@ class ExternalUserDetailsController(
         @GemUserId userId: String,
         @PathVariable groupId: String,
         @PathVariable groupMemberId: String,
-
     ): UserDetailsResponse {
         val groupMembers = groupManagerClient.getMembers(groupId).members
         groupMembers.find { it.id == userId } ?: throw UserWithoutGroupAccessException(userId)

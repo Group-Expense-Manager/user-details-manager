@@ -4,5 +4,6 @@ import pl.edu.agh.gem.internal.model.UserDetails
 
 interface UserDetailsRepository {
     fun save(userDetails: UserDetails): UserDetails
+
     fun findById(userId: String): UserDetails?
 }

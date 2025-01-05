@@ -14,14 +14,16 @@ data class ExternalUserDetailsDto(
     val attachmentId: String,
 )
 
-fun List<UserDetails>.toExternalGroupUserDetailsResponse() = ExternalGroupUserDetailsResponse(
-    details = map { it.toExternalUserDetailsDto() },
-)
+fun List<UserDetails>.toExternalGroupUserDetailsResponse() =
+    ExternalGroupUserDetailsResponse(
+        details = map { it.toExternalUserDetailsDto() },
+    )
 
-fun UserDetails.toExternalUserDetailsDto() = ExternalUserDetailsDto(
-    id = id,
-    username = username,
-    firstName = firstName,
-    lastName = lastName,
-    attachmentId = attachmentId,
-)
+fun UserDetails.toExternalUserDetailsDto() =
+    ExternalUserDetailsDto(
+        id = id,
+        username = username,
+        firstName = firstName,
+        lastName = lastName,
+        attachmentId = attachmentId,
+    )

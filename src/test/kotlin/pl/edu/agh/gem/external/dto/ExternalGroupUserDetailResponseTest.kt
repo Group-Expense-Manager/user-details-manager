@@ -41,4 +41,4 @@ class ExternalGroupUserDetailResponseTest : ShouldSpec({
             it.map { dto -> dto.attachmentId } shouldContainExactly groupUserDetails.map { userDetails -> userDetails.attachmentId }
         }
     }
-},)
+})

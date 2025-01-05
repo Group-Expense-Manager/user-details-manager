@@ -83,15 +83,12 @@ fun createBasicUserDetailsEntity(
     attachmentId = attachmentId,
 )
 
-fun createDefaultAttachmentResponse(
-    attachmentId: String = ATTACHMENT_ID,
-) = DefaultAttachmentResponse(
-    id = attachmentId,
-)
+fun createDefaultAttachmentResponse(attachmentId: String = ATTACHMENT_ID) =
+    DefaultAttachmentResponse(
+        id = attachmentId,
+    )
 
-fun createUserGroupsResponse(
-    vararg groups: String = arrayOf(GROUP_ID, ANOTHER_GROUP_ID),
-) = UserGroupsResponse(groups = groups.map { GroupDto(it) })
+fun createUserGroupsResponse(vararg groups: String = arrayOf(GROUP_ID, ANOTHER_GROUP_ID)) = UserGroupsResponse(groups = groups.map { GroupDto(it) })
 
 fun createUserDetailsUpdateRequest(
     username: String = "user",

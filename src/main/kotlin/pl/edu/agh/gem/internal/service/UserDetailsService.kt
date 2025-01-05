@@ -27,16 +27,17 @@ class UserDetailsService(
     fun updateUserDetails(userDetailsUpdate: UserDetailsUpdate): UserDetails {
         val userDetails = userDetailsRepository.findById(userDetailsUpdate.userId) ?: throw MissingUserDetailsException(userDetailsUpdate.userId)
 
-        val updatedUserDetails = UserDetails(
-            id = userDetails.id,
-            username = userDetailsUpdate.username,
-            firstName = userDetailsUpdate.firstName,
-            lastName = userDetailsUpdate.lastName,
-            phoneNumber = userDetailsUpdate.phoneNumber,
-            bankAccountNumber = userDetailsUpdate.bankAccountNumber,
-            preferredPaymentMethod = userDetailsUpdate.preferredPaymentMethod,
-            attachmentId = userDetails.attachmentId,
-        )
+        val updatedUserDetails =
+            UserDetails(
+                id = userDetails.id,
+                username = userDetailsUpdate.username,
+                firstName = userDetailsUpdate.firstName,
+                lastName = userDetailsUpdate.lastName,
+                phoneNumber = userDetailsUpdate.phoneNumber,
+                bankAccountNumber = userDetailsUpdate.bankAccountNumber,
+                preferredPaymentMethod = userDetailsUpdate.preferredPaymentMethod,
+                attachmentId = userDetails.attachmentId,
+            )
 
         return userDetailsRepository.save(updatedUserDetails)
     }

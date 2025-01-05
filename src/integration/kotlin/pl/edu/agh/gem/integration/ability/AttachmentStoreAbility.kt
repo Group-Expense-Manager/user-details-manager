@@ -12,7 +12,11 @@ import pl.edu.agh.gem.paths.Paths.INTERNAL
 
 private fun createDefaultAttachmentUrl(userId: String) = "$INTERNAL/users/$userId/generate"
 
-fun stubDefaultAttachmentUrl(body: Any?, userId: String, statusCode: HttpStatusCode = OK) {
+fun stubDefaultAttachmentUrl(
+    body: Any?,
+    userId: String,
+    statusCode: HttpStatusCode = OK,
+) {
     wiremock.stubFor(
         post(urlMatching(createDefaultAttachmentUrl(userId)))
             .willReturn(

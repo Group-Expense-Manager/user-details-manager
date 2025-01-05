@@ -22,13 +22,14 @@ data class UserDetailsUpdateRequest(
     val bankAccountNumber: String? = null,
     val preferredPaymentMethod: PaymentMethod,
 ) {
-    fun toDomain(userId: String) = UserDetailsUpdate(
-        userId = userId,
-        username = username,
-        firstName = firstName,
-        lastName = lastName,
-        phoneNumber = phoneNumber,
-        bankAccountNumber = bankAccountNumber,
-        preferredPaymentMethod = preferredPaymentMethod,
-    )
+    fun toDomain(userId: String) =
+        UserDetailsUpdate(
+            userId = userId,
+            username = username,
+            firstName = firstName,
+            lastName = lastName,
+            phoneNumber = phoneNumber,
+            bankAccountNumber = bankAccountNumber,
+            preferredPaymentMethod = preferredPaymentMethod,
+        )
 }
