@@ -9,7 +9,8 @@ paths:
     get:
       tags:
         - External User Details
-      summary: "GET external/user-details"
+      summary: "Retrieve User Details"
+      description: "Retrieves the details of the currently authenticated user."
       operationId: "getUserDetails"
       responses:
         "200":
@@ -20,8 +21,9 @@ paths:
     put:
       tags:
         - External User Details
-      summary: "PUT external/user-details"
-      operationId: "updateGroupUserDetails"
+      summary: "Update User Details"
+      description: "Updates the details of the currently authenticated user."
+      operationId: "updateUserDetails"
       requestBody:
         $ref: '#/components/requestBodies/UserDetailsUpdateRequest'
       responses:
@@ -34,7 +36,8 @@ paths:
     get:
       tags:
         - External User Details
-      summary: "GET external/user-details/groups/{groupId}"
+      summary: "Retrieve User Details for a Specific Group"
+      description: "Retrieves the details of the currently authenticated user in the context of a specific group."
       operationId: "getGroupUserDetails"
       parameters:
         - $ref: '#/components/parameters/GroupId'
@@ -46,13 +49,14 @@ paths:
         "404":
           $ref: '#/components/responses/GroupManagerClientException'
         "500":
-            $ref: '#/components/responses/MissingUserDetailsException'
+          $ref: '#/components/responses/MissingUserDetailsException'
 
   /external/user-details/groups/{groupId}/members/{groupMemberId}:
     get:
       tags:
         - External User Details
-      summary: "GET external/user-details/groups/{groupId}/members/{groupMemberId}"
+      summary: "Retrieve Details of a Group Member"
+      description: "Retrieves the details of a specific member within a given group."
       operationId: "getGroupMemberDetails"
       parameters:
         - $ref: '#/components/parameters/GroupId'
@@ -66,11 +70,13 @@ paths:
           $ref: '#/components/responses/GroupManagerClientException'
         "500":
           $ref: '#/components/responses/MissingUserDetailsException'
+
   /internal/user-details:
     post:
       tags:
         - Internal User Details
-      summary: "POST internal/user-details"
+      summary: "Create User Details"
+      description: "Creates a new user details record."
       operationId: "createUserDetails"
       requestBody:
         $ref: "#/components/schemas/UserDetailsCreationRequest"
@@ -81,12 +87,14 @@ paths:
           $ref: '#/components/responses/AttachmentStoreClientException'
         "500":
           $ref: '#/components/responses/RetryableAttachmentStoreClientException'
+
   /internal/user-details/groups/{groupId}:
     get:
       tags:
         - Internal User Details
-      summary: "GET internal/user-details/groups/{groupId}"
-      operationId: "getGroupUserDetails"
+      summary: "Retrieve Internal User Details for a Specific Group"
+      description: "Retrieves the internal details of a user in the context of a specific group."
+      operationId: "getInternalGroupUserDetails" # Changed for clarity
       parameters:
         - $ref: '#/components/parameters/GroupId'
       responses:
@@ -101,7 +109,8 @@ paths:
     get:
       tags:
         - Internal User Details
-      summary: "GET internal/user-details/username/{userId}"
+      summary: "Retrieve Username by User ID"
+      description: "Retrieves the username associated with a given user ID."
       operationId: "getUsername"
       parameters:
         - $ref: '#/components/parameters/UserId'
@@ -141,6 +150,7 @@ components:
   requestBodies:
     UserDetailsCreationRequest:
       description: User details creation request.
+      required: true
       content:
         application/vnd.gem.internal.v1+json:
           schema:
@@ -152,6 +162,7 @@ components:
                 username: "john.doe"
     UserDetailsUpdateRequest:
       description: User details update request.
+      required: true
       content:
         application/vnd.gem.internal.v1+json:
           schema:
