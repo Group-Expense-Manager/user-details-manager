@@ -1,0 +1,503 @@
+openapi: 3.0.1
+info:
+  title: User Details Manager API
+  version: v1
+  description: API for managing user details.
+
+paths:
+  /external/user-details:
+    get:
+      tags:
+        - External User Details
+      summary: "GET external/user-details"
+      operationId: "getUserDetails"
+      responses:
+        "200":
+          $ref: '#/components/responses/UserDetailsResponse'
+        "500":
+          $ref: '#/components/responses/MissingUserDetailsException'
+
+    put:
+      tags:
+        - External User Details
+      summary: "PUT external/user-details"
+      operationId: "updateGroupUserDetails"
+      requestBody:
+        $ref: '#/components/requestBodies/UserDetailsUpdateRequest'
+      responses:
+        "200":
+          $ref: '#/components/responses/UserDetailsResponse'
+        "500":
+          $ref: '#/components/responses/MissingUserDetailsException'
+
+  /external/user-details/groups/{groupId}:
+    get:
+      tags:
+        - External User Details
+      summary: "GET external/user-details/groups/{groupId}"
+      operationId: "getGroupUserDetails"
+      parameters:
+        - $ref: '#/components/parameters/GroupId'
+      responses:
+        "200":
+          $ref: '#/components/responses/ExternalGroupUserDetailsResponse'
+        "403":
+          $ref: '#/components/responses/UserWithoutGroupAccessException'
+        "404":
+          $ref: '#/components/responses/GroupManagerClientException'
+        "500":
+            $ref: '#/components/responses/MissingUserDetailsException'
+
+  /external/user-details/groups/{groupId}/members/{groupMemberId}:
+    get:
+      tags:
+        - External User Details
+      summary: "GET external/user-details/groups/{groupId}/members/{groupMemberId}"
+      operationId: "getGroupMemberDetails"
+      parameters:
+        - $ref: '#/components/parameters/GroupId'
+        - $ref: '#/components/parameters/GroupMemberId'
+      responses:
+        "200":
+          $ref: '#/components/responses/UserDetailsResponse'
+        "403":
+          $ref: '#/components/responses/UserNotGroupMemberException'
+        "404":
+          $ref: '#/components/responses/GroupManagerClientException'
+        "500":
+          $ref: '#/components/responses/MissingUserDetailsException'
+  /internal/user-details:
+    post:
+      tags:
+        - Internal User Details
+      summary: "POST internal/user-details"
+      operationId: "createUserDetails"
+      requestBody:
+        $ref: "#/components/schemas/UserDetailsCreationRequest"
+      responses:
+        "201":
+          description: "Created"
+        "404":
+          $ref: '#/components/responses/AttachmentStoreClientException'
+        "500":
+          $ref: '#/components/responses/RetryableAttachmentStoreClientException'
+  /internal/user-details/groups/{groupId}:
+    get:
+      tags:
+        - Internal User Details
+      summary: "GET internal/user-details/groups/{groupId}"
+      operationId: "getGroupUserDetails"
+      parameters:
+        - $ref: '#/components/parameters/GroupId'
+      responses:
+        "200":
+          $ref: '#/components/responses/InternalGroupUserDetailsResponse'
+        "404":
+          $ref: '#/components/responses/GroupManagerClientException'
+        "500":
+          $ref: '#/components/responses/MissingUserDetailsException'
+
+  /internal/user-details/username/{userId}:
+    get:
+      tags:
+        - Internal User Details
+      summary: "GET internal/user-details/username/{userId}"
+      operationId: "getUsername"
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        "200":
+          $ref: '#/components/responses/InternalUsernameResponse'
+        "500":
+          $ref: '#/components/responses/MissingUserDetailsException'
+
+components:
+  parameters:
+    GroupId:
+      name: groupId
+      in: path
+      required: true
+      schema:
+        type: string
+        example: "53f34d91-0172-4674-af73-813a666de1a9"
+      description: The ID of the group.
+    GroupMemberId:
+      name: groupMemberId
+      in: path
+      required: true
+      schema:
+        type: string
+        example: "c224f4a2-625e-42fb-9306-5f81aa817293"
+      description: The ID of the group member.
+    UserId:
+      name: userId
+      in: path
+      required: true
+      schema:
+          type: string
+          example: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+      description: The ID of the user.
+
+  requestBodies:
+    UserDetailsCreationRequest:
+      description: User details creation request.
+      content:
+        application/vnd.gem.internal.v1+json:
+          schema:
+            $ref: '#/components/schemas/UserDetailsCreationRequest'
+          examples:
+            exampleUserDetailsCreationRequest:
+              value:
+                userId: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+                username: "john.doe"
+    UserDetailsUpdateRequest:
+      description: User details update request.
+      content:
+        application/vnd.gem.internal.v1+json:
+          schema:
+            $ref: '#/components/schemas/UserDetailsUpdateRequest'
+          examples:
+            exampleUserDetailsUpdateRequest:
+              value:
+                username: "john.doe"
+                firstName: "John"
+                lastName: "Doe"
+                phoneNumber: "+1-555-555-5555"
+                bankAccountNumber: "GB29NWBK60161331926819"
+                preferredPaymentMethod: "CREDIT_CARD"
+
+  responses:
+    InternalUsernameResponse:
+      description: Internal username response.
+      content:
+        application/vnd.gem.internal.v1+json:
+          schema:
+            $ref: '#/components/schemas/InternalUsernameResponse'
+          examples:
+            exampleInternalUsernameResponse:
+              value:
+                username: "john.doe"
+    InternalGroupUserDetailsResponse:
+      description: Internal group user details response.
+      content:
+        application/vnd.gem.internal.v1+json:
+          schema:
+            $ref: '#/components/schemas/InternalGroupUserDetailsResponse'
+          examples:
+            exampleInternalGroupUserDetailsResponse:
+              value:
+                details:
+                  - id: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+                    username: "john.doe"
+                    firstName: "John"
+                    lastName: "Doe"
+                  - id: "83b68be-9cf2-4f00-8a48-d1c7a8ef0201"
+                    username: "jane.doe"
+                    firstName: "Jane"
+                    lastName: "Doe"
+    ExternalGroupUserDetailsResponse:
+      description: External group user details response.
+      content:
+        application/vnd.gem.internal.v1+json:
+          schema:
+            $ref: '#/components/schemas/ExternalGroupUserDetailsResponse'
+          examples:
+            exampleExternalGroupUserDetailsResponse:
+              value:
+                details:
+                  - id: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+                    username: "john.doe"
+                    firstName: "John"
+                    lastName: "Doe"
+                    attachmentId: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+                  - id: "83b68be-9cf2-4f00-8a48-d1c7a8ef0201"
+                    username: "jane.doe"
+                    firstName: "Jane"
+                    lastName: "Doe"
+                    attachmentId: "83b68be-9cf2-4f00-8a48-d1c7a8ef0201"
+    UserDetailsResponse:
+      description: User details response.
+      content:
+        application/vnd.gem.internal.v1+json:
+          schema:
+            $ref: '#/components/schemas/UserDetailsResponse'
+          examples:
+            exampleUserDetailsResponse:
+              value:
+                id: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+                username: "john.doe"
+                firstName: "John"
+                lastName: "Doe"
+                phoneNumber: "+1-555-555-5555"
+                bankAccountNumber: "1234567890"
+                preferredPaymentMethod: "CREDIT_CARD"
+                attachmentId: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+
+
+    UserWithoutGroupAccessException:
+      description: User is not a member of the group
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SimpleErrorsHolder'
+          examples:
+            exampleNotFound:
+              value:
+                errors:
+                  - code: "UserWithoutGroupAccessException"
+                    details: "UserWithoutGroupAccessException"
+                    message: "User with id:$userId is not a member of the group"
+                    userMessage: "User with id:$userId is not a member of the group"
+    MissingUserDetailsException:
+      description: Failed to find userDetails for user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SimpleErrorsHolder'
+          examples:
+            exampleNotFound:
+              value:
+                errors:
+                  - code: "MissingUserDetailsException"
+                    details: "MissingUserDetailsException"
+                    message: "Failed to find userDetails for id: $userId"
+                    userMessage: "Failed to find userDetails for id: $userId"
+    UserNotGroupMemberException:
+      description: Another user is not a member of group
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SimpleErrorsHolder'
+          examples:
+            exampleNotFound:
+              value:
+                errors:
+                  - code: "UserNotGroupMemberException"
+                    details: "UserNotGroupMemberException"
+                    message: "User with id: $userId is not a member of group with id: $groupId"
+                    userMessage: "User with id: $userId is not a member of group with id: $groupId"
+    RetryableAttachmentStoreClientException:
+      description: Retryable exception from the attachment store client
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SimpleErrorsHolder'
+          examples:
+            exampleNotFound:
+              value:
+                errors:
+                  - code: "RetryableAttachmentStoreClientException"
+                    details: "RetryableAttachmentStoreClientException"
+                    message: "Server side exception while trying to retrieve attachmentId"
+                    userMessage: "Server side exception while trying to retrieve attachmentId"
+    AttachmentStoreClientException:
+      description: Non-retryable exception from the attachment store client
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SimpleErrorsHolder'
+          examples:
+            exampleNotFound:
+              value:
+                errors:
+                  - code: "AttachmentStoreClientException"
+                    details: "AttachmentStoreClientException"
+                    message: "Client side exception while trying to retrieve attachmentId"
+                    userMessage: "Client side exception while trying to retrieve attachmentId"
+    RetryableGroupManagerClientException:
+      description: Retryable exception from the group manager client
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SimpleErrorsHolder'
+          examples:
+            exampleNotFound:
+              value:
+                errors:
+                  - code: "RetryableGroupManagerClientException"
+                    details: "RetryableGroupManagerClientException"
+                    message: "Client side exception while trying to retrieve group members"
+                    userMessage: "Client side exception while trying to retrieve group members"
+    GroupManagerClientException:
+      description: Non-retryable exception from the group manager client
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SimpleErrorsHolder'
+          examples:
+            exampleNotFound:
+              value:
+                errors:
+                  - code: "GroupManagerClientException"
+                    details: "GroupManagerClientException"
+                    message: "Server side exception while trying to retrieve attachmentId"
+                    userMessage: "Server side exception while trying to retrieve attachmentId"
+
+  schemas:
+    InternalUsernameResponse:
+      type: object
+      properties:
+        username:
+          type: string
+          description: The username of the internal user.
+          example: "john.doe"
+    InternalGroupUserDetailsResponse:
+      type: object
+      properties:
+        details:
+          type: array
+          description: A list of internal user details.
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: The ID of the internal user.
+                example: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+              username:
+                type: string
+                description: The username of the internal user.
+                example: "john.doe"
+              firstName:
+                type: string
+                description: The first name of the internal user.
+                example: "John"
+              lastName:
+                type: string
+                description: The last name of the internal user.
+                example: "Doe"
+    UserDetailsCreationRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: The ID of the user.
+          example: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+        username:
+          type: string
+          description: The username of the user.
+          example: "john.doe"
+    UserDetailsUpdateRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          description: The username of the user.
+          example: "john.doe"
+        firstName:
+          type: string
+          description: The first name of the user.
+          example: "John"
+        lastName:
+          type: string
+          description: The last name of the user.
+          example: "Doe"
+        phoneNumber:
+          type: string
+          description: The phone number of the user.
+          example: "+1-555-555-5555"
+        bankAccountNumber:
+          type: string
+          description: The bank account number of the user.
+          example: "PL60109024023642367267128789"
+        preferredPaymentMethod:
+          type: string
+          description: The preferred payment method of the user. [CASH,BANK_TRANSFER,MOBILE_PAYMENT,NONE]
+          example: "BANK_TRANSFER"
+    ExternalGroupUserDetailsResponse:
+      type: object
+      properties:
+        details:
+          type: array
+          description: A list of external user details.
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: The ID of the external user.
+                example: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+              username:
+                type: string
+                description: The username of the external user.
+                example: "john.doe"
+              firstName:
+                type: string
+                description: The first name of the external user.
+                example: "John"
+              lastName:
+                type: string
+                description: The last name of the external user.
+                example: "Doe"
+              attachmentId:
+                type: string
+                description: The ID of the attachment.
+                example: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+    UserDetailsResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the user.
+          example: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+        username:
+          type: string
+          description: The username of the user.
+          example: "john.doe"
+        firstName:
+          type: string
+          description: The first name of the user.
+          example: "John"
+        lastName:
+          type: string
+          description: The last name of the user.
+          example: "Doe"
+        phoneNumber:
+          type: string
+          description: The phone number of the user.
+          example: "+1-555-555-5555"
+        bankAccountNumber:
+          type: string
+          description: The bank account number of the user.
+          example: "PL60109024023642367267128789"
+        preferredPaymentMethod:
+          type: string
+          description: The preferred payment method of the user. [CASH,BANK_TRANSFER,MOBILE_PAYMENT,NONE]
+          example: "BANK_TRANSFER"
+        attachmentId:
+          type: string
+          description: The ID of the attachment.
+          example: "94d93de-9cf2-4f00-8a48-d1c7a8ef0200"
+    SimpleErrorsHolder:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                nullable: true
+                description: Error code.
+                example: "INVALID_VALUE"
+              message:
+                type: string
+                nullable: true
+                description: Error message.
+                example: "The provided value is invalid."
+              details:
+                type: string
+                nullable: true
+                description: Additional error details.
+                example: "The field 'email' must contain a valid email address."
+              path:
+                type: string
+                nullable: true
+                description: The API path related to the error.
+                example: "/external/users/{userId}/attachments/{attachmentId}"
+              userMessage:
+                type: string
+                nullable: true
+                description: A user-friendly error message.
+                example: "Please provide a valid email address."
