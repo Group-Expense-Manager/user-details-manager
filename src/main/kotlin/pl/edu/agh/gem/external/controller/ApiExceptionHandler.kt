@@ -49,7 +49,7 @@ class ApiExceptionHandler {
 
     @ExceptionHandler(AttachmentStoreClientException::class)
     fun handleAttachmentStoreClientException(exception: AttachmentStoreClientException): ResponseEntity<SimpleErrorsHolder> {
-        return ResponseEntity(handleError(exception), INTERNAL_SERVER_ERROR)
+        return ResponseEntity(handleError(exception), BAD_REQUEST)
     }
 
     @ExceptionHandler(RetryableGroupManagerClientException::class)
@@ -59,6 +59,6 @@ class ApiExceptionHandler {
 
     @ExceptionHandler(GroupManagerClientException::class)
     fun handleGroupManagerClientException(exception: GroupManagerClientException): ResponseEntity<SimpleErrorsHolder> {
-        return ResponseEntity(handleError(exception), INTERNAL_SERVER_ERROR)
+        return ResponseEntity(handleError(exception), BAD_REQUEST)
     }
 }
